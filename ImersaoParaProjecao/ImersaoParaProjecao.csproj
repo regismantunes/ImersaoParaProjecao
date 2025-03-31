@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Title>Imersão Para Projeção</Title>
+    <Authors>Regis Antunes</Authors>
+    <Company>Igreja em Sorriso</Company>
+    <Product>Imersão Para Projeção</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ImersionExtractor.cs~RF33afffe8.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="itext7" Version="9.1.0" />
+  </ItemGroup>
+
+</Project>

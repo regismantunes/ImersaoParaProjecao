@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImersaoParaProjecao", "ImersaoParaProjecao\ImersaoParaProjecao.csproj", "{38DB43EB-51F1-4FA2-8D75-9A665AE4ABDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImersaoParaProjecao.WPF", "ImersaoParaProjecao.WPF\ImersaoParaProjecao.WPF.csproj", "{9989E0A3-EC94-493F-9247-885FF4AB7EFE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DD549BB-FE52-4935-A963-DDB2A9540682}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38DB43EB-51F1-4FA2-8D75-9A665AE4ABDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38DB43EB-51F1-4FA2-8D75-9A665AE4ABDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38DB43EB-51F1-4FA2-8D75-9A665AE4ABDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38DB43EB-51F1-4FA2-8D75-9A665AE4ABDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9989E0A3-EC94-493F-9247-885FF4AB7EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9989E0A3-EC94-493F-9247-885FF4AB7EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9989E0A3-EC94-493F-9247-885FF4AB7EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9989E0A3-EC94-493F-9247-885FF4AB7EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3295B610-0A49-4045-8AF7-A0EC330015C9}
+	EndGlobalSection
+EndGlobal
