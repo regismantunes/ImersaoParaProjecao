@@ -20,13 +20,13 @@ namespace ImersaoParaProjecao
 
                 var imersionDaysList = new Dictionary<string, string[]>();
 
-                var imersionDays = from ImersionDay imersionDay in flpImersionDays.Controls
+                var imersionDays = from ImmersionDay imersionDay in flpImersionDays.Controls
                                    select imersionDay;
 
-                foreach (ImersionDay control in imersionDays)
-                    imersionDaysList.Add(control.Day, control.ImersionItems);
+                foreach (ImmersionDay control in imersionDays)
+                    imersionDaysList.Add(control.Day, control.ImmersionItems);
 
-                var imersionText = ImersionExtractor.GetImersionToProjection(imersionDaysList);
+                var imersionText = ImmersionExtractor.GetImmersionToProjection(imersionDaysList);
 
                 Clipboard.SetText(imersionText);
             }
@@ -84,7 +84,7 @@ namespace ImersaoParaProjecao
 
                 ClearLoadedImersionFile();
 
-                var imersionDays = ImersionExtractor.GetImersionDays(filePath, out var messageTitle);
+                var imersionDays = ImmersionExtractor.GetImmersionDays(filePath, out var messageTitle);
                 if (imersionDays == null)
                     return;
 
@@ -95,7 +95,7 @@ namespace ImersaoParaProjecao
                     var day = imersionDay.Key;
                     var items = imersionDay.Value;
 
-                    var ucImersionDay = new ImersionDay(messageTitle, day, items)
+                    var ucImersionDay = new ImmersionDay(messageTitle, day, items)
                     {
                         Width = flpImersionDays.Width - 25,
                         Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right

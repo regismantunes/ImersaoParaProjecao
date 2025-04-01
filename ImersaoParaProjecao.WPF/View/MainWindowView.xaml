@@ -1,0 +1,41 @@
+﻿<Window x:Class="ImersaoParaProjecao.View.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImersaoParaProjecao.View"
+        xmlns:viewmodel="clr-namespace:ImersaoParaProjecao.ViewModel"
+        mc:Ignorable="d"
+        Title="Immersion to Projection" Height="450" Width="800"
+        Background="Black"
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Column="0" Grid.Row="0"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Visibility="Visible"
+               AllowDrop="True"
+               DragEnter="Border_DragEnter"
+               Drop="Border_Drop"
+               >
+            <StackPanel Orientation="Vertical">
+                <TextBlock 
+                    Text="Drop immersion PDF file here" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="White"
+                    FontSize="20"
+                    Visibility="{Binding VisibilityDropFileTextBlock}"/>
+                <ContentControl
+                    Content="{Binding ImmersionWeekView}"
+                    Visibility="{Binding VisibilityImmersionWeekView}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

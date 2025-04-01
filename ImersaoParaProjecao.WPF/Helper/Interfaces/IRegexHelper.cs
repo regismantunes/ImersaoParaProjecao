@@ -1,11 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ImersaoParaProjecao.Helper.Interfaces
+namespace ImersaoParaProjecao.Helper.Interfaces;
+
+public interface IRegexHelper
 {
-    public interface IRegexHelper
-    {
-        Regex GetEndOfDaillyPoints();
-        Regex GetImersionPoints();
-        Regex GetMessageTitle();
-    }
+    Regex GetEndOfDaillyPoints();
+    Regex GetImersionPoints();
+    Regex GetMessageHeader();
+    Regex GetNumber();
+    Regex GetBibleReading();
 }

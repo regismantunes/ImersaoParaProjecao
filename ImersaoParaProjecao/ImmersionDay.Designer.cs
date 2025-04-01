@@ -1,6 +1,6 @@
 ﻿namespace ImersaoParaProjecao
 {
-    partial class ImersionDay
+    partial class ImmersionDay
     {
         /// <summary> 
         /// Required designer variable.

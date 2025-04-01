@@ -3,14 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace ImersaoParaProjecao.Helper;
 
-public partial class RegexHelper : IRegexHelper
+public partial class RegexHelper(RegexHelperPatterns patterns) : IRegexHelper
 {
-    [GeneratedRegex(@"^\d+\.")]
-    public partial Regex GetImersionPoints();
+    public Regex GetImersionPoints() => new(patterns.ImersionPoints);
 
-    [GeneratedRegex(@"(ANOTE ABAIXO A LUZ NA PALAVRA|ANOTE ABAIXO O SENTIMENTO RECEBIDO DO SENHOR AO IMERGIR NOS PONTOS ACIMA)")]
-    public partial Regex GetEndOfDaillyPoints();
+    public Regex GetEndOfDaillyPoints() => new(patterns.EndOfDaillyPoints);
 
-    [GeneratedRegex(@"(\s*Mens\. \d+ |Reunião de Abertura)")]
-    public partial Regex GetMessageTitle();
+    public Regex GetMessageHeader() => new(patterns.MessageHeader);
+
+    public Regex GetNumber() => new(patterns.Number);
+
+    public Regex GetBibleReading() => new(patterns.BibleReading);
 }

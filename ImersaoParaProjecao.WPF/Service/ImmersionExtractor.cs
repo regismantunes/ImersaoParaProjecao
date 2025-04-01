@@ -4,24 +4,27 @@ using iText.Kernel.Pdf;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
-using ImersaoParaProjecao.Model.Interfaces;
 using ImersaoParaProjecao.Helper.Interfaces;
+using ImersaoParaProjecao.Extensions;
+using ImersaoParaProjecao.Service.Interfaces;
+using ImersaoParaProjecao.Model;
+using System.Globalization;
 
-namespace ImersaoParaProjecao.Model;
+namespace ImersaoParaProjecao.Service;
 
-public class ImersionExtractor(IRegexHelper regexHelper) : IImersionExtractor
+public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider) : IImmersionExtractor
 {
-    public string GetImersionToProjection(Dictionary<string, string[]> imersionDays)
+    public string GetTextToProjection(IEnumerable<ImmersionDay> immersionDays)
     {
         var sbFinal = new StringBuilder();
 
-        foreach (var item in imersionDays)
+        foreach (var immersionDay in immersionDays)
         {
-            foreach (var imersionItem in item.Value)
+            foreach (var immersionItem in immersionDay.Items)
             {
                 sbFinal
-                    .AppendLine(item.Key)
-                    .AppendLine(imersionItem)
+                    .AppendLine(immersionDay.Day.ToString())
+                    .AppendLine(immersionItem)
                     .AppendLine();
             }
         }
@@ -29,16 +32,13 @@ public class ImersionExtractor(IRegexHelper regexHelper) : IImersionExtractor
         return sbFinal.ToString().Trim();
     }
 
-    public Dictionary<string, string[]>? GetImersionDays(string filePath, out string? messageTitle)
+    public ImmersionWeek? ExtractFromFile(string filePath)
     {
         var fileContent = GetPdfText(filePath);
         if (string.IsNullOrEmpty(fileContent))
-        {
-            messageTitle = null;
             return null;
-        }
-
-        return ConvertPdfTextToProjectionText(fileContent, out messageTitle);
+        
+        return ConvertPdfTextToImmersionWeek(fileContent);
     }
 
     private static string GetPdfText(string filePath)
@@ -56,25 +56,41 @@ public class ImersionExtractor(IRegexHelper regexHelper) : IImersionExtractor
         return sbContent.ToString();
     }
 
-    private Dictionary<string, string[]> ConvertPdfTextToProjectionText(string text, out string messageTitle)
+    private ImmersionWeek ConvertPdfTextToImmersionWeek(string text)
     {
         const string errorMessage = @"Não foi possível identificar o texto para extração da imersão.";
 
-        var matchTitle = regexHelper.GetMessageTitle().Match(text);
+        var matchTitle = regexHelper.GetMessageHeader().Match(text);
         if (!matchTitle.Success)
             throw new InvalidDataException(errorMessage);
 
-        var n = matchTitle.Index + matchTitle.Length;
-        var o = n + text[n..].IndexOf('\n');
-        messageTitle = text[matchTitle.Index..o].Trim();
+        var n = matchTitle.Index + matchTitle.Length + 1;
+        var matchMessageNumber = regexHelper.GetNumber().Match(matchTitle.Value);
+        var matchBibleReading = regexHelper.GetBibleReading().Match(text[n..]);
+        string messageTitle;
+        if (!matchBibleReading.Success ||
+            !matchMessageNumber.Success)
+            messageTitle = matchTitle.Value;
+        else
+        {
+            var singleMessageTitle = text[n..(n + matchBibleReading.Index)].TrimSpecialCharacters();
+            var o = n + matchBibleReading.Index + matchBibleReading.Length + 1;
+            var p = o + text[o..].IndexOf('\n');
+            var bibleReading = text[o..p].TrimSpecialCharacters();
+            messageTitle = $"Mens. {Convert.ToInt16(matchMessageNumber.Value)}: {singleMessageTitle} ({bibleReading})";
+        }
 
-        var imersionDays = new Dictionary<string, string[]>();
-        var daysOfWeek = new[] { "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO", "DOMINGO" };
+        var immersionDays = new List<ImmersionDay>();
+        var daysOfWeek = Enum.GetValues<DayOfWeek>()
+            .Cast<DayOfWeek>()
+            .ToArray();
+        //var formatProvider = CultureInfo.CreateSpecificCulture("pt-BR");
 
         for (var d = 0; d < daysOfWeek.Length; d++)
         {
             var dayOfWeek = daysOfWeek[d];
-            var matchStart = Regex.Match(text, $@"\s+{dayOfWeek}\s+");
+            var dayOfWeekName = string.Format(formatProvider, "{0:ddddd}", dayOfWeek).ToUpperInvariant();
+            var matchStart = Regex.Match(text, $@"\s+{dayOfWeekName}\s+");
             if (!matchStart.Success)
             {
                 if (d == 0)
@@ -107,10 +123,10 @@ public class ImersionExtractor(IRegexHelper regexHelper) : IImersionExtractor
 
             var pointMatches = dailyPointsText.Split('\n');
 
-            imersionDays.Add(dayOfWeek, pointMatches);
+            immersionDays.Add(new ImmersionDay() { Day = dayOfWeek , Items = pointMatches});
         }
 
-        return imersionDays.OrderBy(x => Array.IndexOf(daysOfWeek, x))
+        return immersionDays.OrderBy(x => Array.IndexOf(daysOfWeek, x))
                            .ToDictionary();
     }
 }

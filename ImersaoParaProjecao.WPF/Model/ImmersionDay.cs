@@ -1,9 +1,8 @@
-﻿namespace ImersaoParaProjecao.Model
-{
-    public class ImmersionDay
-    {
-        public required DayOfWeek Day { get; set; }
+﻿namespace ImersaoParaProjecao.Model;
 
-        public required string[] Items { get; set; }
-    }
+public class ImmersionDay
+{
+    public required DayOfWeek Day { get; set; }
+
+    public required string[] Items { get; set; }
 }

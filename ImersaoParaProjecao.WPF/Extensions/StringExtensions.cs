@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ImersaoParaProjecao.Extensions;
 
@@ -33,5 +34,16 @@ public static class StringExtensions
         }
 
         return sb.ToString();
+    }
+
+    public static string TrimSpecialCharacters(this string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        string pattern = @"^[^a-zA-Z0-9\u00C0-\u00FF]+|[^a-zA-Z0-9\u00C0-\u00FF]+$";
+        string trimmed = Regex.Replace(text, pattern, string.Empty);
+
+        return trimmed;
     }
 }

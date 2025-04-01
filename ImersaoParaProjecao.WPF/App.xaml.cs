@@ -1,7 +1,10 @@
-﻿using ImersaoParaProjecao.Helper;
+﻿using ImersaoParaProjecao.Extensions;
+using ImersaoParaProjecao.Helper;
 using ImersaoParaProjecao.Helper.Interfaces;
 using ImersaoParaProjecao.Model;
 using ImersaoParaProjecao.Model.Interfaces;
+using ImersaoParaProjecao.View;
+using ImersaoParaProjecao.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
@@ -20,9 +23,7 @@ public partial class App : Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddSingleton<MainWindow>();
-                services.AddSingleton<IRegexHelper, RegexHelper>();
-                services.AddSingleton<IImersionExtractor, ImersionExtractor>();
+                services.AddServices(hostContext.Configuration);
             })
             .Build();
     }
@@ -31,7 +32,7 @@ public partial class App : Application
     {
         await AppHost!.StartAsync();
 
-        var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+        var startupForm = AppHost.Services.GetRequiredService<MainWindowView>();
         startupForm.Show();
 
         base.OnStartup(e);

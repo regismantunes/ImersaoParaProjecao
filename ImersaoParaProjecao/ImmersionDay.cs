@@ -1,24 +1,24 @@
 ﻿namespace ImersaoParaProjecao
 {
-    public partial class ImersionDay : UserControl
+    public partial class ImmersionDay : UserControl
     {
         private readonly string _day;
         private readonly string _messageTitle;
-        private readonly string[] _imersionItems;
+        private readonly string[] _immersionItems;
 
-        public ImersionDay(string messageTitle, string day, string[] imersionItems)
+        public ImmersionDay(string messageTitle, string day, string[] immersionItems)
         {
             InitializeComponent();
 
             _day = day;
             _messageTitle = messageTitle;
-            _imersionItems = imersionItems;
+            _immersionItems = immersionItems;
 
             lblWeekday.Text = _day;
-            lblImersionItems.Text = string.Join("\r\n", _imersionItems);
+            lblImersionItems.Text = string.Join("\r\n", _immersionItems);
         }
 
-        public string[] ImersionItems => lblImersionItems.Text.Split("\r\n");
+        public string[] ImmersionItems => lblImersionItems.Text.Split("\r\n");
 
         public string Day => _day;
         public string MessageTitle => _messageTitle;
@@ -30,7 +30,7 @@
 
         private void btnCopyContentToClipboard_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(string.Join("\r\n\r\n", _imersionItems));
+            Clipboard.SetText(string.Join("\r\n\r\n", _immersionItems));
         }
     }
 }

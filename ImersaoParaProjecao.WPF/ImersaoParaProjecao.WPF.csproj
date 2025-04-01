@@ -2,13 +2,17 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>ImersaoParaProjecao</AssemblyName>
     <RootNamespace>ImersaoParaProjecao</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ViewModel\MainWindowViewModel.cs~RF38346746.TMP" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="itext7" Version="9.1.0" />

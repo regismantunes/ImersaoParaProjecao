@@ -7,9 +7,9 @@ using ImersaoParaProjecao.Utility;
 
 namespace ImersaoParaProjecao
 {
-    public static partial class ImersionExtractor
+    public static partial class ImmersionExtractor
     {
-        public static string GetImersionToProjection(Dictionary<string, string[]> imersionDays)
+        public static string GetImmersionToProjection(Dictionary<string, string[]> imersionDays)
         {
             var sbFinal = new StringBuilder();
 
@@ -26,7 +26,7 @@ namespace ImersaoParaProjecao
             return sbFinal.ToString().Trim();
         }
 
-        public static Dictionary<string, string[]>? GetImersionDays(string filePath, out string? messageTitle)
+        public static Dictionary<string, string[]>? GetImmersionDays(string filePath, out string? messageTitle)
         {
             var fileContent = GetPdfText(filePath);
             if (string.IsNullOrEmpty(fileContent))
@@ -84,7 +84,7 @@ namespace ImersaoParaProjecao
                 messageTitle = $"Mens. {Convert.ToInt16(matchMessageNumber.Value)}: {singleMessageTitle} ({bibleReading})";
             }
             
-            var imersionDays = new Dictionary<string, string[]>();
+            var immersionDays = new Dictionary<string, string[]>();
             var daysOfWeek = new[] { "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO", "DOMINGO" };
 
             for (var d = 0; d < daysOfWeek.Length; d++)
@@ -122,10 +122,10 @@ namespace ImersaoParaProjecao
 
                 var pointMatches = dailyPointsText.Split('\n');
 
-                imersionDays.Add(dayOfWeek, pointMatches);
+                immersionDays.Add(dayOfWeek, pointMatches);
             }
 
-            return imersionDays.OrderBy(x => Array.IndexOf(daysOfWeek, x))
+            return immersionDays.OrderBy(x => Array.IndexOf(daysOfWeek, x))
                                .ToDictionary();
         }
     }

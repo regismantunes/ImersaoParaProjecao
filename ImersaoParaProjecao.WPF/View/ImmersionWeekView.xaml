@@ -12,28 +12,26 @@
         Title="Immersion to Projection" Height="450" Width="800"
         Background="Black">
     <Grid>
-        <b:Interaction.Triggers>
-            <b:EventTrigger EventName="DragEnter">
-                <b:InvokeCommandAction Command="{Binding DragEnter}"/>
-            </b:EventTrigger>
-            <b:EventTrigger EventName="DragDrop">
-                <b:InvokeCommandAction Command="{Binding DragDrop}"/>
-            </b:EventTrigger>
-        </b:Interaction.Triggers>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-               Content="Drop immersion PDF file here"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               Foreground="White"
-               FontSize="20"/>
+        <Button Grid.Column="0" Grid.Row="0"
+                Content="Copy to clipboard"
+                Command="{Binding CopyToClipboardCommand}"/>
+        <TextBlock Grid.Column="1" Grid.Row="0"
+                   Text="{Binding MessageTitle}"/>
+        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                  ItemsSource="{Binding ImmersionDays}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Day}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
