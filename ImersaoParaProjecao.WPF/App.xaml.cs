@@ -1,10 +1,6 @@
 ﻿using ImersaoParaProjecao.Extensions;
-using ImersaoParaProjecao.Helper;
-using ImersaoParaProjecao.Helper.Interfaces;
-using ImersaoParaProjecao.Model;
-using ImersaoParaProjecao.Model.Interfaces;
 using ImersaoParaProjecao.View;
-using ImersaoParaProjecao.ViewModel;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
@@ -21,6 +17,10 @@ public partial class App : Application
     public App()
     {
         AppHost = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration(configureDelegate =>
+            {
+                configureDelegate.AddJsonFile("appsettings.json", true);
+            })
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddServices(hostContext.Configuration);
@@ -34,6 +34,7 @@ public partial class App : Application
 
         var startupForm = AppHost.Services.GetRequiredService<MainWindowView>();
         startupForm.Show();
+        startupForm.Closed += (_, _) => Shutdown();
 
         base.OnStartup(e);
     }

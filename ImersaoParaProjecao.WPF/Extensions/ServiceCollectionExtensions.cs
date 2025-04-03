@@ -17,7 +17,11 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IRegexHelper>(_ => new RegexHelper(RegexHelperPatternsFactory.CreateFromConfiguration(configuration)))
             .AddSingleton<IFormatProvider>(CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "pt-BR"))
-            .AddSingleton<IImmersionExtractor, ImmersionExtractor>()
+            .AddSingleton<IImmersionExtractor>(s => 
+                new ImmersionExtractor(
+                    s.GetRequiredService<IRegexHelper>(),
+                    s.GetRequiredService<IFormatProvider>(),
+                    configuration.GetValueValidating<string>("MessageTitleFormat")))
             //MainWindow
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton(s => new MainWindowView()

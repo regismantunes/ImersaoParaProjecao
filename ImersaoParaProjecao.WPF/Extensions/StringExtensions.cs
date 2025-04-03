@@ -46,4 +46,5 @@ public static class StringExtensions
 
         return trimmed;
     }
+
 }

@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace ImersaoParaProjecao.Helper;
 
-public partial class RegexHelper(RegexHelperPatterns patterns) : IRegexHelper
+public class RegexHelper(RegexHelperPatterns patterns) : IRegexHelper
 {
-    public Regex GetImersionPoints() => new(patterns.ImersionPoints);
+    public Regex GetImmersionPoint() => new(patterns.ImmersionPoint);
 
-    public Regex GetEndOfDaillyPoints() => new(patterns.EndOfDaillyPoints);
+    public Regex GetEndOfDaillyPoint() => new(patterns.EndOfDaillyPoint);
 
     public Regex GetMessageHeader() => new(patterns.MessageHeader);
 

@@ -15,10 +15,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Styles\DarkStyle.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="itext7" Version="9.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Styles\DarkStyle.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -4,8 +4,8 @@ namespace ImersaoParaProjecao.Helper.Interfaces;
 
 public interface IRegexHelper
 {
-    Regex GetEndOfDaillyPoints();
-    Regex GetImersionPoints();
+    Regex GetEndOfDaillyPoint();
+    Regex GetImmersionPoint();
     Regex GetMessageHeader();
     Regex GetNumber();
     Regex GetBibleReading();

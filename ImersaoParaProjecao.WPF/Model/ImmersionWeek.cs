@@ -1,8 +1,8 @@
 ﻿namespace ImersaoParaProjecao.Model;
 
-public class ImmersionWeek
+public record ImmersionWeek
 {
-    public required string MessageTitle { get; set; }
+    public required string MessageTitle { get; init; }
 
-    public required IEnumerable<ImmersionDay> ImersionDays { get; set; }
+    public required IEnumerable<ImmersionDay> ImmersionDays { get; init; }
 }

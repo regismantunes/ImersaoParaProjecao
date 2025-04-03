@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ImersaoParaProjecao.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace ImersaoParaProjecao.Helper
 {
@@ -9,8 +10,8 @@ namespace ImersaoParaProjecao.Helper
             var configurationRegex = configuration.GetSection("Regex");
             return new RegexHelperPatterns()
             {
-                ImersionPoints = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.ImersionPoints)),
-                EndOfDaillyPoints = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.EndOfDaillyPoints)),
+                ImmersionPoint = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.ImmersionPoint)),
+                EndOfDaillyPoint = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.EndOfDaillyPoint)),
                 MessageHeader = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.MessageHeader)),
                 Number = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.Number)),
                 BibleReading = GetConfigurationValue(configurationRegex, nameof(RegexHelperPatterns.BibleReading)),
@@ -18,6 +19,6 @@ namespace ImersaoParaProjecao.Helper
         }
 
         private static string GetConfigurationValue(IConfiguration configuration, string key)
-            => configuration.GetValue<string>(key) ?? throw new MissingFieldException($"Missing {key} Regex expression");
+            => configuration.GetValueValidating<string>(key, $"Missing {key} Regex expression");
     }
 }

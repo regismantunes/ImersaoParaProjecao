@@ -12,6 +12,8 @@ public class CommandHandler(Action action, Func<bool> canExecute) : ICommand
     private readonly Action _action = action;
     private readonly Func<bool> _canExecute = canExecute;
 
+    public CommandHandler(Action action) : this(action, () => true) { }
+
     /// <summary>
     /// Wires CanExecuteChanged event 
     /// </summary>

@@ -8,11 +8,10 @@ using ImersaoParaProjecao.Helper.Interfaces;
 using ImersaoParaProjecao.Extensions;
 using ImersaoParaProjecao.Service.Interfaces;
 using ImersaoParaProjecao.Model;
-using System.Globalization;
 
 namespace ImersaoParaProjecao.Service;
 
-public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider) : IImmersionExtractor
+public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat) : IImmersionExtractor
 {
     public string GetTextToProjection(IEnumerable<ImmersionDay> immersionDays)
     {
@@ -23,7 +22,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             foreach (var immersionItem in immersionDay.Items)
             {
                 sbFinal
-                    .AppendLine(immersionDay.Day.ToString())
+                    .AppendLine(immersionDay.Day.GetLocalizedName(formatProvider))
                     .AppendLine(immersionItem)
                     .AppendLine();
             }
@@ -56,10 +55,10 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         return sbContent.ToString();
     }
 
-    private ImmersionWeek ConvertPdfTextToImmersionWeek(string text)
-    {
-        const string errorMessage = @"Não foi possível identificar o texto para extração da imersão.";
+    private const string errorMessage = @"Não foi possível identificar o texto para extração da imersão.";
 
+    private async Task<string> GetMessageTitle(string text)
+    {
         var matchTitle = regexHelper.GetMessageHeader().Match(text);
         if (!matchTitle.Success)
             throw new InvalidDataException(errorMessage);
@@ -73,24 +72,32 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             messageTitle = matchTitle.Value;
         else
         {
-            var singleMessageTitle = text[n..(n + matchBibleReading.Index)].TrimSpecialCharacters();
+            var singleMessageTitle = text[n..(n + matchBibleReading.Index)]
+                .TrimSpecialCharacters()
+                .Replace("\r", string.Empty)
+                .Replace("\n", string.Empty);
+
             var o = n + matchBibleReading.Index + matchBibleReading.Length + 1;
             var p = o + text[o..].IndexOf('\n');
             var bibleReading = text[o..p].TrimSpecialCharacters();
-            messageTitle = $"Mens. {Convert.ToInt16(matchMessageNumber.Value)}: {singleMessageTitle} ({bibleReading})";
+            messageTitle = string.Format(messageTitleFormat, Convert.ToInt16(matchMessageNumber.Value), singleMessageTitle, bibleReading);
         }
 
+        return await Task.FromResult(messageTitle);
+    }
+
+    private async Task<List<ImmersionDay>> GetImmersionDays(string text)
+    {
         var immersionDays = new List<ImmersionDay>();
         var daysOfWeek = Enum.GetValues<DayOfWeek>()
             .Cast<DayOfWeek>()
             .ToArray();
-        //var formatProvider = CultureInfo.CreateSpecificCulture("pt-BR");
 
         for (var d = 0; d < daysOfWeek.Length; d++)
         {
             var dayOfWeek = daysOfWeek[d];
-            var dayOfWeekName = string.Format(formatProvider, "{0:ddddd}", dayOfWeek).ToUpperInvariant();
-            var matchStart = Regex.Match(text, $@"\s+{dayOfWeekName}\s+");
+            var dayOfWeekName = dayOfWeek.GetLocalizedName(formatProvider);
+            var matchStart = Regex.Match(text, $@"\s+{dayOfWeekName}\s+", RegexOptions.IgnoreCase);
             if (!matchStart.Success)
             {
                 if (d == 0)
@@ -101,7 +108,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
 
             var i = matchStart.Index + matchStart.Length;
 
-            var matchPoints = regexHelper.GetEndOfDaillyPoints()
+            var matchPoints = regexHelper.GetEndOfDaillyPoint()
                 .Match(text[i..]);
             if (!matchPoints.Success)
                 throw new InvalidDataException(errorMessage);
@@ -114,7 +121,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
                 .Where(x => x.Length > 0)
                 .Aggregate((a, b) =>
                 {
-                    if (regexHelper.GetImersionPoints().IsMatch(b))
+                    if (regexHelper.GetImmersionPoint().IsMatch(b))
                         return string.Concat(a, "\n", b);
                     if (a.EndsWith('-'))
                         return string.Concat(a, b);
@@ -123,10 +130,23 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
 
             var pointMatches = dailyPointsText.Split('\n');
 
-            immersionDays.Add(new ImmersionDay() { Day = dayOfWeek , Items = pointMatches});
+            immersionDays.Add(new ImmersionDay() { Day = dayOfWeek, Items = pointMatches });
         }
 
-        return immersionDays.OrderBy(x => Array.IndexOf(daysOfWeek, x))
-                           .ToDictionary();
+        return await Task.FromResult(immersionDays);
+    }
+
+    private ImmersionWeek ConvertPdfTextToImmersionWeek(string text)
+    {
+        var messageTitleTask = GetMessageTitle(text);
+        var immersionDaysTask = GetImmersionDays(text);
+
+        Task.WaitAll(messageTitleTask, immersionDaysTask);
+
+        return new ImmersionWeek 
+        { 
+            MessageTitle = messageTitleTask.Result, 
+            ImmersionDays = immersionDaysTask.Result 
+        };
     }
 }

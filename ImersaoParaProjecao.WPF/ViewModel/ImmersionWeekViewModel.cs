@@ -1,8 +1,19 @@
-﻿namespace ImersaoParaProjecao.ViewModel;
+﻿using ImersaoParaProjecao.Model;
+using ImersaoParaProjecao.Service.Interfaces;
+using ImersaoParaProjecao.Utility;
+using System.Windows;
 
-public class ImmersionWeekViewModel(Dictionary<string, string[]> immersionDays) : BaseViewModel
+namespace ImersaoParaProjecao.ViewModel;
+
+public class ImmersionWeekViewModel(ImmersionWeek immersionWeek, IImmersionExtractor immersionExtractor, IFormatProvider formatProvider)
 {
-    public string MessageTitle { get; init; }
+    public string MessageTitle => immersionWeek.MessageTitle;
 
+    public IEnumerable<ImmersionDayViewModel> ImmersionDays => immersionWeek.ImmersionDays.Select(d => new ImmersionDayViewModel(d, formatProvider));
 
+    public CommandHandler CopyToClipboardCommand => new(() =>
+    {
+        var textToProjection = immersionExtractor.GetTextToProjection(immersionWeek.ImmersionDays);
+        Clipboard.SetText(textToProjection);
+    });
 }

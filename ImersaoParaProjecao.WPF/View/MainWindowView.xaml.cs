@@ -10,7 +10,7 @@ public partial class MainWindowView : Window
         InitializeComponent();
     }
 
-    private void Border_DragEnter(object sender, DragEventArgs e)
+    private void Window_DragEnter(object sender, DragEventArgs e)
     {
         if (e.Data == null)
             return;
@@ -29,7 +29,7 @@ public partial class MainWindowView : Window
         e.Effects = DragDropEffects.None;
     }
 
-    private void Border_Drop(object sender, DragEventArgs e)
+    private void Window_Drop(object sender, DragEventArgs e)
     {
         if (e.Data == null)
             return;
