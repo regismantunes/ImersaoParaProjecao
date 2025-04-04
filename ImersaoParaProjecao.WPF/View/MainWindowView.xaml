@@ -14,20 +14,22 @@
         AllowDrop="True"
         Cursor="{Binding CurrentCursor}"
         Style="{StaticResource {x:Type Window}}">
-    <StackPanel Orientation="Vertical">
-        <TextBlock
-            Text="{Binding DropFileMessage}"
-            Style="{StaticResource DropMessage}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Visibility="{Binding VisibilityDropFileTextBlock}"/>
-            <ScrollViewer
-                HorizontalScrollBarVisibility="Auto"
-                VerticalScrollBarVisibility="Disabled"
-                Padding="15,5">
-                <ContentControl
-                    Content="{Binding ImmersionWeekView}"
-                    Visibility="{Binding VisibilityImmersionWeekView}"/>
-        </ScrollViewer>
-    </StackPanel>
+    <DockPanel>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                Text="{Binding DropFileMessage}"
+                Style="{StaticResource DropMessage}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="{Binding VisibilityDropFileTextBlock}"/>
+            <ContentControl Grid.Row="1"
+                Content="{Binding ImmersionWeekView}"
+                Visibility="{Binding VisibilityImmersionWeekView}">
+            </ContentControl>
+        </Grid>
+    </DockPanel>
 </Window>

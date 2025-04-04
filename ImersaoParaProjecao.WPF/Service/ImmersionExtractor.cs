@@ -86,7 +86,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         return await Task.FromResult(messageTitle);
     }
 
-    private async Task<List<ImmersionDay>> GetImmersionDays(string text)
+    private async Task<IEnumerable<ImmersionDay>> GetImmersionDays(string text)
     {
         var immersionDays = new List<ImmersionDay>();
         var daysOfWeek = Enum.GetValues<DayOfWeek>()
@@ -133,7 +133,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             immersionDays.Add(new ImmersionDay() { Day = dayOfWeek, Items = pointMatches });
         }
 
-        return await Task.FromResult(immersionDays);
+        return await Task.FromResult(immersionDays.OrderBy(d => d.Day == DayOfWeek.Sunday ? 7 : (int)d.Day));
     }
 
     private ImmersionWeek ConvertPdfTextToImmersionWeek(string text)

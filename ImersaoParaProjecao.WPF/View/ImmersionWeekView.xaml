@@ -9,7 +9,8 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=viewmodel:ImmersionWeekViewModel}"
         mc:Ignorable="d"
-        Height="450" Width="800">
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -17,21 +18,27 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button Grid.Column="0" Grid.Row="0"
                 Content="Copy to clipboard"
                 Command="{Binding CopyToClipboardCommand}"/>
         <TextBlock Grid.Column="1" Grid.Row="0"
-                   Text="{Binding MessageTitle}"/>
-        <ListView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
-                  ItemsSource="{Binding ImmersionDays}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Day}"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Items}"/>
-                </GridView>
-            </ListView.View>
+                Text="{Binding MessageTitle}"
+                Style="{StaticResource WrapText}"/>
+        <ListView ItemsSource="{Binding ImmersionDays}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Day}"/>
+                        <TextBlock Text="{Binding Items}"
+                                Style="{StaticResource WrapText}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
     </Grid>
 </UserControl>

@@ -1,5 +1,6 @@
 ﻿using ImersaoParaProjecao.Service.Interfaces;
 using ImersaoParaProjecao.View;
+using Microsoft.VisualBasic;
 using System.Windows;
 using System.Windows.Input;
 
@@ -15,30 +16,36 @@ public class MainWindowViewModel(IImmersionExtractor immersionExtractor, IFormat
 
     public void OnFileDropped(string filePath)
     {
-        try
+        CurrentCursor = Cursors.Wait;
+        OnPropertyChanged(nameof(CurrentCursor));
+
+        LoadImmersionWeek(filePath).ContinueWith(task =>
         {
-            CurrentCursor = Cursors.Wait;
-            OnPropertyChanged(nameof(CurrentCursor));
+            if (task.IsFaulted)
+                MessageBox.Show(task.Exception?.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-            var immersionWeek = immersionExtractor.ExtractFromFile(filePath);
-            if (immersionWeek == null)
-                return;
-
-            ImmersionWeekView = new ImmersionWeekView()
-            {
-                DataContext = new ImmersionWeekViewModel(immersionWeek, immersionExtractor, formatProvider)
-            };
-            VisibilityDropFileTextBlock = Visibility.Collapsed;
-            VisibilityImmersionWeekView = Visibility.Visible;
-
-            OnPropertyChanged(nameof(ImmersionWeekView));
-            OnPropertyChanged(nameof(VisibilityDropFileTextBlock));
-            OnPropertyChanged(nameof(VisibilityImmersionWeekView));
-        }
-        finally
-        {
             CurrentCursor = Cursors.Arrow;
             OnPropertyChanged(nameof(CurrentCursor));
-        }
+        });
+    }
+
+    private async Task LoadImmersionWeek(string filePath)
+    {
+        var immersionWeek = immersionExtractor.ExtractFromFile(filePath);
+        if (immersionWeek == null)
+            return;
+
+        ImmersionWeekView = new ImmersionWeekView()
+        {
+            DataContext = new ImmersionWeekViewModel(immersionWeek, immersionExtractor, formatProvider)
+        };
+        VisibilityDropFileTextBlock = Visibility.Collapsed;
+        VisibilityImmersionWeekView = Visibility.Visible;
+
+        OnPropertyChanged(nameof(ImmersionWeekView));
+        OnPropertyChanged(nameof(VisibilityDropFileTextBlock));
+        OnPropertyChanged(nameof(VisibilityImmersionWeekView));
+
+        await Task.CompletedTask;
     }
 }

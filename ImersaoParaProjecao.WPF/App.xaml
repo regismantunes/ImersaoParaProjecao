@@ -1,10 +1,15 @@
 ﻿<Application x:Class="ImersaoParaProjecao.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ImersaoParaProjecao">
+             xmlns:local="clr-namespace:ImersaoParaProjecao"
+             xmlns:converter="clr-namespace:ImersaoParaProjecao.Utility.Converter">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <converter:WidthMarginConverter x:Key="WidthMarginConverter"/>
+                    <converter:HeightMarginConverter x:Key="HeightMarginConverter"/>
+                </ResourceDictionary>
                 <ResourceDictionary Source="/Styles/DarkStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
