@@ -1,6 +1,6 @@
-using ImersaoParaProjecao.Utility;
+using ImmersionToProjection.Utility;
 
-namespace ImersaoParaProjecao
+namespace ImmersionToProjection
 {
     public partial class MainForm : Form
     {

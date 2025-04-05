@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ImersaoParaProjecao.View;
+namespace ImmersionToProjection.View;
 
 /// <summary>
 /// Interaction logic for ImmersionWeekView.xaml

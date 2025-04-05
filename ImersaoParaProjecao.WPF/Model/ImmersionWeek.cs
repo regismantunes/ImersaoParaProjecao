@@ -1,4 +1,4 @@
-﻿namespace ImersaoParaProjecao.Model;
+﻿namespace ImmersionToProjection.Model;
 
 public record ImmersionWeek
 {

@@ -1,19 +1,30 @@
-﻿using ImersaoParaProjecao.Model;
-using ImersaoParaProjecao.Service.Interfaces;
-using ImersaoParaProjecao.Utility;
+﻿using ImmersionToProjection.Model;
+using ImmersionToProjection.Service.Interfaces;
+using ImmersionToProjection.Utility;
 using System.Windows;
 
-namespace ImersaoParaProjecao.ViewModel;
+namespace ImmersionToProjection.ViewModel;
 
-public class ImmersionWeekViewModel(ImmersionWeek immersionWeek, IImmersionExtractor immersionExtractor, IFormatProvider formatProvider)
+public class ImmersionWeekViewModel(IImmersionExtractor immersionExtractor, IFormatProvider formatProvider) : BaseViewModel
 {
-    public string MessageTitle => immersionWeek.MessageTitle;
+    private ImmersionWeek? ImmersionWeek { get; set; }
+    public string? MessageTitle => ImmersionWeek?.MessageTitle;
+    public IEnumerable<ImmersionDayViewModel>? ImmersionDays => ImmersionWeek?.ImmersionDays
+        .Select(d => new ImmersionDayViewModel(d, formatProvider));
 
-    public IEnumerable<ImmersionDayViewModel> ImmersionDays => immersionWeek.ImmersionDays.Select(d => new ImmersionDayViewModel(d, formatProvider));
+    public void SetImmersionWeek(ImmersionWeek immersionWeek)
+    {
+        ImmersionWeek = immersionWeek;
+        OnPropertyChanged(nameof(MessageTitle));
+        OnPropertyChanged(nameof(ImmersionDays));
+    }
 
     public CommandHandler CopyToClipboardCommand => new(() =>
     {
-        var textToProjection = immersionExtractor.GetTextToProjection(immersionWeek.ImmersionDays);
+        if (ImmersionWeek is null)
+            return;
+        
+        var textToProjection = immersionExtractor.GetTextToProjection(ImmersionWeek.ImmersionDays);
         Clipboard.SetText(textToProjection);
     });
 }

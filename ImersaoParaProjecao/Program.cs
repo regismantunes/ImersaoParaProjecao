@@ -1,4 +1,4 @@
-namespace ImersaoParaProjecao
+namespace ImmersionToProjection
 {
     internal static class Program
     {

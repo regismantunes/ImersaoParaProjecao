@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Security.AccessControl;
 
-namespace ImersaoParaProjecao
+namespace ImmersionToProjection
 {
     public static class FileAssociation
     {

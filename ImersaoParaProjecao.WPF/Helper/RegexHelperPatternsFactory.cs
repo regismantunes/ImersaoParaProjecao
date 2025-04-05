@@ -1,7 +1,7 @@
-﻿using ImersaoParaProjecao.Extensions;
+﻿using ImmersionToProjection.Extensions;
 using Microsoft.Extensions.Configuration;
 
-namespace ImersaoParaProjecao.Helper
+namespace ImmersionToProjection.Helper
 {
     public static class RegexHelperPatternsFactory
     {
@@ -19,6 +19,6 @@ namespace ImersaoParaProjecao.Helper
         }
 
         private static string GetConfigurationValue(IConfiguration configuration, string key)
-            => configuration.GetValueValidating<string>(key, $"Missing {key} Regex expression");
+            => configuration.GetValueValidating(key, $"Missing {key} Regex expression");
     }
 }

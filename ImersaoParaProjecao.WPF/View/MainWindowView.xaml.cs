@@ -1,7 +1,7 @@
-﻿using ImersaoParaProjecao.ViewModel;
+﻿using ImmersionToProjection.ViewModel;
 using System.Windows;
 
-namespace ImersaoParaProjecao.View;
+namespace ImmersionToProjection.View;
 
 public partial class MainWindowView : Window
 {
@@ -40,6 +40,9 @@ public partial class MainWindowView : Window
             return;
 
         if (DataContext is MainWindowViewModel viewModel)
+        {
+            e.Effects = DragDropEffects.Scroll;
             viewModel.OnFileDropped(dragData[0]);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ImersaoParaProjecao
+﻿namespace ImmersionToProjection
 {
     partial class ImmersionDay
     {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ImersaoParaProjecao.Extensions
+namespace ImmersionToProjection.Extensions
 {
     public static class DayOfWeekExtensions
     {

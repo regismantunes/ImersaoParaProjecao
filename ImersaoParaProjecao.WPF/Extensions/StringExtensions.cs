@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ImersaoParaProjecao.Extensions;
+namespace ImmersionToProjection.Extensions;
 
 public static class StringExtensions
 {

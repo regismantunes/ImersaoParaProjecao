@@ -1,7 +1,7 @@
-﻿using ImersaoParaProjecao.Helper.Interfaces;
+﻿using ImmersionToProjection.Helper.Interfaces;
 using System.Text.RegularExpressions;
 
-namespace ImersaoParaProjecao.Helper;
+namespace ImmersionToProjection.Helper;
 
 public class RegexHelper(RegexHelperPatterns patterns) : IRegexHelper
 {

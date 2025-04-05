@@ -1,4 +1,4 @@
-﻿namespace ImersaoParaProjecao.Utility
+﻿namespace ImmersionToProjection.Utility
 {
     public static class MessageError
     {

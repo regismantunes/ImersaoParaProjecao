@@ -3,9 +3,9 @@ using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf;
 using System.Text;
 using System.Text.RegularExpressions;
-using ImersaoParaProjecao.Utility;
+using ImmersionToProjection.Utility;
 
-namespace ImersaoParaProjecao
+namespace ImmersionToProjection
 {
     public static partial class ImmersionExtractor
     {

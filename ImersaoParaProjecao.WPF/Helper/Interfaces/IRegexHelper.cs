@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ImersaoParaProjecao.Helper.Interfaces;
+namespace ImmersionToProjection.Helper.Interfaces;
 
 public interface IRegexHelper
 {

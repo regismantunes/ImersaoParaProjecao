@@ -1,12 +1,13 @@
-﻿using ImersaoParaProjecao.Service.Interfaces;
-using ImersaoParaProjecao.View;
-using Microsoft.VisualBasic;
+﻿using ImmersionToProjection.Service.Interfaces;
+using ImmersionToProjection.View;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
-namespace ImersaoParaProjecao.ViewModel;
+namespace ImmersionToProjection.ViewModel;
 
-public class MainWindowViewModel(IImmersionExtractor immersionExtractor, IFormatProvider formatProvider) : BaseViewModel
+public class MainWindowViewModel(IImmersionExtractor immersionExtractor) : BaseViewModel
 {
     public string DropFileMessage { get; private set; } = "Drop immersion PDF file here";
     public ImmersionWeekView? ImmersionWeekView { get; private set; }
@@ -17,7 +18,10 @@ public class MainWindowViewModel(IImmersionExtractor immersionExtractor, IFormat
     public void OnFileDropped(string filePath)
     {
         CurrentCursor = Cursors.Wait;
+        DropFileMessage = "Extracting immersion points...";
         OnPropertyChanged(nameof(CurrentCursor));
+        OnPropertyChanged(nameof(DropFileMessage));
+        ForceUIUpdate();
 
         LoadImmersionWeek(filePath).ContinueWith(task =>
         {
@@ -25,7 +29,9 @@ public class MainWindowViewModel(IImmersionExtractor immersionExtractor, IFormat
                 MessageBox.Show(task.Exception?.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             CurrentCursor = Cursors.Arrow;
+            DropFileMessage = "Drop immersion PDF file here";
             OnPropertyChanged(nameof(CurrentCursor));
+            OnPropertyChanged(nameof(DropFileMessage));
         });
     }
 
@@ -35,10 +41,10 @@ public class MainWindowViewModel(IImmersionExtractor immersionExtractor, IFormat
         if (immersionWeek == null)
             return;
 
-        ImmersionWeekView = new ImmersionWeekView()
-        {
-            DataContext = new ImmersionWeekViewModel(immersionWeek, immersionExtractor, formatProvider)
-        };
+        ImmersionWeekView = App.AppHost!.Services.GetRequiredService<ImmersionWeekView>();
+        if (ImmersionWeekView.DataContext is ImmersionWeekViewModel immersionWeekViewModel)
+            immersionWeekViewModel.SetImmersionWeek(immersionWeek);
+
         VisibilityDropFileTextBlock = Visibility.Collapsed;
         VisibilityImmersionWeekView = Visibility.Visible;
 

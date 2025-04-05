@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="BackgroundColor">White</Color>
+    <Color x:Key="ForegroundColor">Black</Color>
+    <Color x:Key="BackgroundButtonColor">#EEEEEE</Color>
+    <Color x:Key="BackgroundButtonMouseOverColor">#CCCCCC</Color>
+    <Color x:Key="BackgroundButtonMouseClickColor">#AAAAAA</Color>
+    <Image x:Key="ConfigurationIcon" Source="/Resources/Images/Configuration_Icon_Light_32.png" Width="32" Height="32"/>
+</ResourceDictionary>

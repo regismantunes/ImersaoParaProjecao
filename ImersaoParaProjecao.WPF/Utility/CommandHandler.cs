@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace ImersaoParaProjecao.Utility;
+namespace ImmersionToProjection.Utility;
 
 /// <summary>
 /// Creates instance of the command handler
@@ -17,7 +17,7 @@ public class CommandHandler(Action action, Func<bool> canExecute) : ICommand
     /// <summary>
     /// Wires CanExecuteChanged event 
     /// </summary>
-    public event EventHandler CanExecuteChanged
+    public event EventHandler? CanExecuteChanged
     {
         add { CommandManager.RequerySuggested += value; }
         remove { CommandManager.RequerySuggested -= value; }
@@ -28,7 +28,7 @@ public class CommandHandler(Action action, Func<bool> canExecute) : ICommand
     /// </summary>
     /// <param name="parameter"></param>
     /// <returns></returns>
-    public bool CanExecute(object parameter) => _canExecute.Invoke();
+    public bool CanExecute(object? parameter) => _canExecute.Invoke();
 
-    public void Execute(object parameter) => _action();
+    public void Execute(object? parameter) => _action();
 }

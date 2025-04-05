@@ -1,4 +1,4 @@
-﻿namespace ImersaoParaProjecao
+﻿namespace ImmersionToProjection
 {
     public partial class ImmersionDay : UserControl
     {

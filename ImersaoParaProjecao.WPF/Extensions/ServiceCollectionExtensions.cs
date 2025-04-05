@@ -1,14 +1,14 @@
-﻿using ImersaoParaProjecao.Helper.Interfaces;
-using ImersaoParaProjecao.Helper;
-using ImersaoParaProjecao.View;
-using ImersaoParaProjecao.ViewModel;
+﻿using ImmersionToProjection.Helper.Interfaces;
+using ImmersionToProjection.Helper;
+using ImmersionToProjection.View;
+using ImmersionToProjection.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using ImersaoParaProjecao.Service;
-using ImersaoParaProjecao.Service.Interfaces;
+using ImmersionToProjection.Service;
+using ImmersionToProjection.Service.Interfaces;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 
-namespace ImersaoParaProjecao.Extensions;
+namespace ImmersionToProjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -17,11 +17,11 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IRegexHelper>(_ => new RegexHelper(RegexHelperPatternsFactory.CreateFromConfiguration(configuration)))
             .AddSingleton<IFormatProvider>(CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "pt-BR"))
-            .AddSingleton<IImmersionExtractor>(s => 
+            .AddSingleton<IImmersionExtractor>(s =>
                 new ImmersionExtractor(
                     s.GetRequiredService<IRegexHelper>(),
                     s.GetRequiredService<IFormatProvider>(),
-                    configuration.GetValueValidating<string>("MessageTitleFormat")))
+                    configuration.GetValueValidating("MessageTitleFormat")))
             //MainWindow
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton(s => new MainWindowView()

@@ -1,7 +1,7 @@
-﻿using ImersaoParaProjecao.Extensions;
-using ImersaoParaProjecao.Model;
+﻿using ImmersionToProjection.Extensions;
+using ImmersionToProjection.Model;
 
-namespace ImersaoParaProjecao.ViewModel
+namespace ImmersionToProjection.ViewModel
 {
     public class ImmersionDayViewModel(ImmersionDay immersionDay, IFormatProvider formatProvider)
     {

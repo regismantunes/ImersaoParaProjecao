@@ -1,4 +1,4 @@
-﻿namespace ImersaoParaProjecao.Helper
+﻿namespace ImmersionToProjection.Helper
 {
     public record RegexHelperPatterns
     {

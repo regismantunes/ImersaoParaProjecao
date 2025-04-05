@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace ImersaoParaProjecao.Extensions
+namespace ImmersionToProjection.Extensions
 {
     public static class ConfigurationExtensions
     {
-        public static T GetValueValidating<T>(this IConfiguration configuration, string key, string? messingExceptionMessage = null)
+        public static string GetValueValidating(this IConfiguration configuration, string key, string? missingExceptionMessage = null)
         {
-            var value = configuration.GetValue<T>(key);
-            return value ?? throw new MissingFieldException(messingExceptionMessage ?? $"Missing {key} configuration value");
+            var value = configuration.GetValue<string>(key);
+            return value ?? throw new MissingFieldException(missingExceptionMessage ?? $"Missing {key} configuration value");
         }
     }
 }

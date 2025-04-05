@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ImersaoParaProjecao.Utility
+namespace ImmersionToProjection.Utility
 {
     public static partial class RegexHelper
     {

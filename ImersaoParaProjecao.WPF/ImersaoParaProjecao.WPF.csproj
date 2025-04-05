@@ -6,27 +6,47 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyName>ImersaoParaProjecao</AssemblyName>
-    <RootNamespace>ImersaoParaProjecao</RootNamespace>
+    <AssemblyName>ImmersionToProjection</AssemblyName>
+    <RootNamespace>ImmersionToProjection</RootNamespace>
+    <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.Extensions.Configuration.Binder.SourceGeneration</InterceptorsPreviewNamespaces>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Configuration_Icon_Dark_32.png" />
+    <None Remove="Resources\Images\Configuration_Icon_Dark_512.png" />
+    <None Remove="Resources\Images\Configuration_Icon_Light_32.png" />
+    <None Remove="Resources\Images\Configuration_Icon_Light_512.png" />
     <None Remove="ViewModel\MainWindowViewModel.cs~RF38346746.TMP" />
   </ItemGroup>
 
   <ItemGroup>
-    <Page Remove="Styles\DarkStyle.xaml" />
+    <Page Remove="Resources\Styles\DarkStyle.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Configuration_Icon_Dark_32.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Configuration_Icon_Dark_512.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Configuration_Icon_Light_32.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Configuration_Icon_Light_512.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="itext7" Version="9.1.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Styles\DarkStyle.xaml" />
+    <Resource Include="Resources\Styles\DarkStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,5 +54,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  
 </Project>

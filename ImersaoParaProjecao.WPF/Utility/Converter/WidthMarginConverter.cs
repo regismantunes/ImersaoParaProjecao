@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace ImersaoParaProjecao.Utility.Converter;
+namespace ImmersionToProjection.Utility.Converter;
 
 public class WidthMarginConverter : IMultiValueConverter
 {
