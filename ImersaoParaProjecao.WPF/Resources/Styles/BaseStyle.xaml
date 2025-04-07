@@ -5,7 +5,6 @@
     <SolidColorBrush x:Key="BackgroundButtonBrush" Color="{DynamicResource BackgroundButtonColor}"/>
     <SolidColorBrush x:Key="BackgroundButtonMouseOverBrush" Color="{DynamicResource BackgroundButtonMouseOverColor}"/>
     <SolidColorBrush x:Key="BackgroundButtonMouseClickBrush" Color="{DynamicResource BackgroundButtonMouseClickColor}"/>
-    <ImageBrush x:Key="ConfigurationIconBrush" ImageSource="{DynamicResource ConfigurationIcon}"/>
     <!--#region Window-->
     <Style TargetType="Window" x:Key="{x:Type Window}">
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
@@ -26,6 +25,7 @@
     </Style>
     <Style TargetType="TextBlock" x:Key="DropMessage" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="WrapTextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
@@ -126,6 +126,12 @@
     <Style TargetType="DockPanel" x:Key="{x:Type DockPanel}">
         <Setter Property="LastChildFill" Value="True"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+    <!--#endregion-->
+    <!--#region Border-->
+    <Style TargetType="Border" x:Key="DropBorder">
+        <Setter Property="Background" Value="{DynamicResource BackgroundButtonBrush}"/>
+        <Setter Property="Margin" Value="0,0,35,5"/>
     </Style>
     <!--#endregion-->
 </ResourceDictionary>

@@ -13,9 +13,13 @@ public class HeightMarginConverter : IMultiValueConverter
             actualHeight -= 15;
 
             for (var i = 1; i < values.Length; i++)
+            {
                 if (values[i] is Thickness margin)
-                    actualHeight = actualHeight - margin.Top - margin.Bottom;
-            
+                    actualHeight -=  (margin.Top + margin.Bottom);
+                else if (values[i] is double fixedValue)
+                    actualHeight -= fixedValue;
+            }
+
             return actualHeight < 0 ? 0 : actualHeight;
         }
 

@@ -10,11 +10,13 @@ public class WidthMarginConverter : IMultiValueConverter
     {
         if (values[0] is double actualWidth)
         {
-            actualWidth -= 25;
-
             for (var i = 1; i < values.Length; i++)
+            {
                 if (values[i] is Thickness margin)
-                    actualWidth = actualWidth - margin.Left - margin.Right;
+                    actualWidth -= (margin.Left + margin.Right);
+                else if (values[i] is double fixedValue)
+                    actualWidth -= fixedValue;
+            }
             
             return actualWidth < 0 ? 0 : actualWidth;
         }

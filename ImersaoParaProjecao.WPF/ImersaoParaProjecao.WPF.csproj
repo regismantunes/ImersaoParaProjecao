@@ -17,6 +17,7 @@
     <None Remove="Resources\Images\Configuration_Icon_Light_32.png" />
     <None Remove="Resources\Images\Configuration_Icon_Light_512.png" />
     <None Remove="ViewModel\MainWindowViewModel.cs~RF38346746.TMP" />
+    <None Remove="View\ImmersionWeekView.xaml.cs~RF9d719f4.TMP" />
   </ItemGroup>
 
   <ItemGroup>

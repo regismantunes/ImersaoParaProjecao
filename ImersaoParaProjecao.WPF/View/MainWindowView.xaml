@@ -9,10 +9,6 @@
         Title="Immersion to Projection"
         Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
-        DragEnter="Window_DragEnter"
-        Drop="Window_Drop"
-        AllowDrop="True"
-        Cursor="{Binding CurrentCursor}"
         Style="{DynamicResource {x:Type Window}}">
     <DockPanel>
         <Grid Margin="5">
@@ -27,18 +23,17 @@
             <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                     Width="32" Height="32"
                     VerticalAlignment="Top"
-                    Style="{DynamicResource ImageButton}">
-                <Image Source="/Resources/Images/Configuration_Icon_Dark_32.png"/>
-            </Button>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                Text="{Binding DropFileMessage}"
-                Style="{DynamicResource DropMessage}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Visibility="{Binding VisibilityDropFileTextBlock}"/>
+                    Style="{DynamicResource ImageButton}"
+                    Content="{DynamicResource ConfigurationIcon}"/>
             <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                Content="{Binding ImmersionWeekView}"
-                Visibility="{Binding VisibilityImmersionWeekView}">
+                Content="{Binding ContentUserControl}">
+                <!--<ContentControl.MinHeight>
+                    <MultiBinding Converter="{StaticResource HeightMarginConverter}">
+                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="ActualWidth"/>
+                        <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="Margin"/>
+                        <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Margin"/>
+                    </MultiBinding>
+                </ContentControl.MinHeight>-->
             </ContentControl>
         </Grid>
     </DockPanel>
