@@ -34,6 +34,12 @@ public static class ServiceCollectionExtensions
             {
                 DataContext = s.GetRequiredService<ImmersionWeekViewModel>()
             })
+            //Configuration
+            .AddSingleton<ConfigurationViewModel>()
+            .AddSingleton(s => new ConfigurationView()
+            {
+                DataContext = s.GetRequiredService<ConfigurationViewModel>()
+            })
             ;
 
         return services;

@@ -9,7 +9,8 @@
         Title="Immersion to Projection"
         Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
-        Style="{DynamicResource {x:Type Window}}">
+        Style="{DynamicResource {x:Type Window}}"
+        Cursor="{Binding CurrentCursor}">
     <DockPanel>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
@@ -20,21 +21,24 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+            <Border Grid.Row="0" Grid.Column="0"
+                    AllowDrop="True"
+                    DragEnter="Border_DragEnter"
+                    Drop="Border_Drop"
+                    Style="{DynamicResource DropBorder}">
+                <TextBlock
+                    Text="{Binding DropFileMessage}"
+                    Style="{DynamicResource DropMessage}"/>
+            </Border>
+            <Button Grid.Row="0" Grid.Column="1"
                     Width="32" Height="32"
                     VerticalAlignment="Top"
                     Style="{DynamicResource ImageButton}"
-                    Content="{DynamicResource ConfigurationIcon}"/>
+                    Content="{DynamicResource ConfigurationIcon}"
+                    Command="{Binding ConfigurationCommand}"/>
             <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                Content="{Binding ContentUserControl}">
-                <!--<ContentControl.MinHeight>
-                    <MultiBinding Converter="{StaticResource HeightMarginConverter}">
-                        <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="ActualWidth"/>
-                        <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="Margin"/>
-                        <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Margin"/>
-                    </MultiBinding>
-                </ContentControl.MinHeight>-->
-            </ContentControl>
+                    Content="{Binding ContentUserControl}"
+                    Visibility="{Binding VisibilityContentUserControl}"/>
         </Grid>
     </DockPanel>
 </Window>
