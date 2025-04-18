@@ -1,9 +1,8 @@
-﻿using ImmersionToProjection.Helper.Interfaces;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace ImmersionToProjection.Helper;
+namespace ImmersionToProjection.Service.Extraction.Patterns;
 
-public class RegexHelper(RegexHelperPatterns patterns) : IRegexHelper
+public class RegexHelper(RegexPatterns patterns) : IRegexHelper
 {
     public Regex GetImmersionPoint() => new(patterns.ImmersionPoint);
 

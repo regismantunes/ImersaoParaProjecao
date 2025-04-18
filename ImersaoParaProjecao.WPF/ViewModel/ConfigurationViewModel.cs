@@ -1,123 +1,128 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ImmersionToProjection.Service.Configuration;
+using ImmersionToProjection.Service.DynamicResources;
+using Microsoft.Extensions.Configuration;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
-namespace ImmersionToProjection.ViewModel
+namespace ImmersionToProjection.ViewModel;
+
+public class ConfigurationViewModel(
+    IConfiguration configuration,
+    IConfigurationUpdater configurationUpdater,
+    IThemeManager themeManager
+    ) : BaseViewModel
 {
-    public class ConfigurationViewModel(IConfiguration configuration) : BaseViewModel
+    public string? Language
     {
-        private readonly IConfigurationSection _regexSection = configuration.GetSection("Regex");
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
 
-        public string? Language
+    public string? Theme
+    {
+        get => GetPropertyValue();
+        set
         {
-            get => configuration.GetValue<string>("Language");
-            set
-            {
-                if (configuration.GetValue<string>("Language") != value)
-                {
-                    configuration["Language"] = value;
-                    OnPropertyChanged();
-                }
-            }
+            SetProppertyValue(value);
+            themeManager.ApplyTheme(value);
         }
+    }
 
-        public string? Theme
+    public string? RegexImmersionPoint
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public string? RegexEndOfDaillyPoint
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public string? RegexMessageHeader
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public string? RegexNumber
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public string? RegexBibleReading
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public string? MessageTitleFormat
+    {
+        get => GetPropertyValue();
+        set => SetProppertyValue(value);
+    }
+
+    public IEnumerable<string> Languages { get; private set; } =
+        [
+            "Português",
+            "Espanhõl",
+            "English",
+            "Korean",
+        ];
+
+    public IEnumerable<string> Themes { get; private set; } =
+        [
+            "Light",
+            "Dark"
+        ];
+
+    private string GetPropertyValue([CallerMemberName] string? propertyName = null)
+    {
+        if (propertyName is null)
+            return string.Empty;
+
+        GetConfigurationProperty(propertyName, out var section, out var configurationPropertyName);
+
+        return section.GetValue<string>(configurationPropertyName) ?? string.Empty;
+    }
+
+    private void GetConfigurationProperty(string propertyName, out IConfiguration section, out string configurationPropertyName)
+    {
+        if (propertyName.StartsWith("Regex"))
         {
-            get => configuration.GetValue<string>("Theme");
-            set
-            {
-                if (configuration.GetValue<string>("Theme") != value)
-                {
-                    configuration["Theme"] = value;
-                    OnPropertyChanged();
-                }
-            }
+            section = configuration.GetSection("Regex");
+            configurationPropertyName = propertyName[5..];
         }
-
-        public string? RegexImmersionPoint
+        else
         {
-            get => _regexSection.GetValue<string>("ImmersionPoint");
-            set
-            {
-                if (_regexSection.GetValue<string>("ImmersionPoint") != value)
-                {
-                    _regexSection["ImmersionPoint"] = value;
-                    OnPropertyChanged();
-                }
-            }
+            section = configuration;
+            configurationPropertyName = propertyName;
         }
+    }
 
-        public string? RegexEndOfDaillyPoint
+    private void SetProppertyValue(string? value, [CallerMemberName] string? propertyName = null)
+    {
+        if (propertyName is null)
+            return;
+
+        if (value is null)
+            throw new InvalidOperationException("Value can't be null.");
+
+        GetConfigurationProperty(propertyName, out var section, out var configurationPropertyName);
+
+        if (section.GetValue<string>(configurationPropertyName) != value)
         {
-            get => _regexSection.GetValue<string>("EndOfDaillyPoint");
-            set
-            {
-                if (_regexSection.GetValue<string>("EndOfDaillyPoint") != value)
-                {
-                    _regexSection["EndOfDaillyPoint"] = value;
-                    OnPropertyChanged();
-                }
-            }
+            section[configurationPropertyName] = value;
+
+            configurationUpdater.UpdateSetting(
+                propertyName.StartsWith("Regex") ?
+                    string.Concat("Regex:", configurationPropertyName) :
+                    configurationPropertyName,
+                value);
+
+            OnPropertyChanged(propertyName);
         }
-
-        public string? RegexMessageHeader
-        {
-            get => _regexSection.GetValue<string>("MessageHeader");
-            set
-            {
-                if (_regexSection.GetValue<string>("MessageHeader") != value)
-                {
-                    _regexSection["MessageHeader"] = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string? RegexNumber
-        {
-            get => _regexSection.GetValue<string>("Number");
-            set
-            {
-                if (_regexSection.GetValue<string>("Number") != value)
-                {
-                    _regexSection["Number"] = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string? RegexBibleReading
-        {
-            get => _regexSection.GetValue<string>("BibleReading");
-            set
-            {
-                if (_regexSection.GetValue<string>("BibleReading") != value)
-                {
-                    _regexSection["BibleReading"] = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string? MessageTitleFormat
-        {
-            get => configuration.GetValue<string>("MessageTitleFormat");
-            set
-            {
-                if (configuration.GetValue<string>("MessageTitleFormat") != value)
-                {
-                    configuration["MessageTitleFormat"] = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public IEnumerable<string> Languages { get; private set; } = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                .Select(c => c.Name);
-
-        public IEnumerable<string> Themes { get; private set; } =
-            [
-                "Light",
-                "Dark"
-            ];
     }
 }

@@ -4,12 +4,11 @@ using iText.Kernel.Pdf;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
-using ImmersionToProjection.Helper.Interfaces;
 using ImmersionToProjection.Extensions;
-using ImmersionToProjection.Service.Interfaces;
 using ImmersionToProjection.Model;
+using ImmersionToProjection.Service.Extraction.Patterns;
 
-namespace ImmersionToProjection.Service;
+namespace ImmersionToProjection.Service.Extraction;
 
 public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat) : IImmersionExtractor
 {

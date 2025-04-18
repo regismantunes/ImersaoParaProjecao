@@ -144,7 +144,7 @@
     <!--#region Border-->
     <Style TargetType="Border" x:Key="DropBorder">
         <Setter Property="Background" Value="{DynamicResource BackgroundButtonBrush}"/>
-        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="Margin" Value="0,0,5,5"/>
     </Style>
     <Style TargetType="Border" x:Key="ThinBorder">
         <Setter Property="Background" Value="Transparent"/>
@@ -162,6 +162,7 @@
     <!--#endregion-->
     <!--#region ComboBox-->
     <Style TargetType="ComboBox" x:Key="{x:Type ComboBox}">
+        <Setter Property="Height" Value="28"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">

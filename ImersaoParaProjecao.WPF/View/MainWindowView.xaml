@@ -25,7 +25,9 @@
                     AllowDrop="True"
                     DragEnter="Border_DragEnter"
                     Drop="Border_Drop"
-                    Style="{DynamicResource DropBorder}">
+                    Style="{DynamicResource DropBorder}"
+                    Margin="0,0,5,5"
+                    Height="33">
                 <TextBlock
                     Text="{Binding DropFileMessage}"
                     Style="{DynamicResource DropMessage}"/>

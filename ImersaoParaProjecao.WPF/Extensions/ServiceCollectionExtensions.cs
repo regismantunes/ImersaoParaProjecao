@@ -1,12 +1,13 @@
-﻿using ImmersionToProjection.Helper.Interfaces;
-using ImmersionToProjection.Helper;
-using ImmersionToProjection.View;
+﻿using ImmersionToProjection.View;
 using ImmersionToProjection.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using ImmersionToProjection.Service;
-using ImmersionToProjection.Service.Interfaces;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
+using ImmersionToProjection.Service.Extraction.Patterns;
+using ImmersionToProjection.Service.Extraction;
+using ImmersionToProjection.Service.Configuration;
+using ImmersionToProjection.Service.DynamicResources;
 
 namespace ImmersionToProjection.Extensions;
 
@@ -15,13 +16,15 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddSingleton<IRegexHelper>(_ => new RegexHelper(RegexHelperPatternsFactory.CreateFromConfiguration(configuration)))
+            .AddSingleton<IRegexHelper>(_ => new RegexHelper(RegexPatternsFactory.CreateFromConfiguration(configuration)))
+            .AddSingleton<IConfigurationUpdater>(_ = new ConfigurationUpdater("appsettings.json"))
             .AddSingleton<IFormatProvider>(CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "pt-BR"))
             .AddSingleton<IImmersionExtractor>(s =>
                 new ImmersionExtractor(
                     s.GetRequiredService<IRegexHelper>(),
                     s.GetRequiredService<IFormatProvider>(),
                     configuration.GetValueValidating("MessageTitleFormat")))
+            .AddSingleton<IThemeManager, ThemeManager>()
             //MainWindow
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton(s => new MainWindowView()

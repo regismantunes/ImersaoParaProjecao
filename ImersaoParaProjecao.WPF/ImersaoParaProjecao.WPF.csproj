@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="Resources\Styles\BaseStyle.xaml" />
     <Page Remove="Resources\Styles\DarkStyle.xaml" />
+    <Page Remove="Resources\Styles\LightStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,13 +50,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Styles\DarkStyle.xaml" />
+  	<Resource Include="Resources\Styles\BaseStyle.xaml">
+  	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+  	</Resource>
+  	<Resource Include="Resources\Styles\DarkStyle.xaml">
+  	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+  	</Resource>
+  	<Resource Include="Resources\Styles\LightStyle.xaml">
+  	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+  	</Resource>
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   
 </Project>

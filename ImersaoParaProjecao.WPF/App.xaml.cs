@@ -1,4 +1,5 @@
 ﻿using ImmersionToProjection.Extensions;
+using ImmersionToProjection.Service.DynamicResources;
 using ImmersionToProjection.View;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,11 +33,20 @@ public partial class App : Application
     {
         await AppHost!.StartAsync();
 
+        ApplayTheme();
+        
         var startupForm = AppHost.Services.GetRequiredService<MainWindowView>();
         startupForm.Show();
         startupForm.Closed += (_, _) => Shutdown();
 
         base.OnStartup(e);
+    }
+
+    private static void ApplayTheme()
+    {
+        var themeManager = AppHost!.Services.GetRequiredService<IThemeManager>();
+        var theme = AppHost.Services.GetRequiredService<IConfiguration>().GetValue<string>("Theme");
+        themeManager.ApplyTheme(theme);
     }
 
     protected override async void OnExit(ExitEventArgs e)

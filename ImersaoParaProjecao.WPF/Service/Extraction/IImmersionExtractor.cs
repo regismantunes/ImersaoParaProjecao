@@ -1,6 +1,6 @@
 ﻿using ImmersionToProjection.Model;
 
-namespace ImmersionToProjection.Service.Interfaces;
+namespace ImmersionToProjection.Service.Extraction;
 
 public interface IImmersionExtractor
 {
