@@ -10,8 +10,8 @@
                     <converter:WidthMarginConverter x:Key="WidthMarginConverter"/>
                     <converter:HeightMarginConverter x:Key="HeightMarginConverter"/>
                 </ResourceDictionary>
-                <ResourceDictionary Source="/Resources/Styles/DarkStyle.xaml"/>
-                <ResourceDictionary Source="/Resources/Styles/BaseStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/Default.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -14,11 +14,11 @@ public class ThemeManager : IThemeManager
         if (theme is null)
             theme = "Light";
 
-        string resourcePath = $"/Resources/Styles/{theme}Style.xaml";
+        var resourcePath = $"/Resources/Themes/{theme}.xaml";
 
-        ResourceDictionary newTheme = new ResourceDictionary
+        var newTheme = new ResourceDictionary
         {
-            Source = new Uri(resourcePath, UriKind.RelativeOrAbsolute)
+            Source = new Uri(resourcePath, UriKind.Relative)
         };
 
         var mergedDictionaries = Application.Current.Resources.MergedDictionaries;
@@ -27,8 +27,7 @@ public class ThemeManager : IThemeManager
         foreach (var dictionary in mergedDictionaries)
         {
             if (dictionary.Source != null &&
-                dictionary.Source.OriginalString.StartsWith("/Resources/Styles/") &&
-                !dictionary.Source.OriginalString.EndsWith("BaseStyle.xaml"))
+                dictionary.Source.OriginalString.StartsWith("/Resources/Themes/"))
             {
                 currentTheme = dictionary;
                 break;

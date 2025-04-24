@@ -6,4 +6,9 @@
     <Color x:Key="BackgroundButtonMouseOverColor">#444444</Color>
     <Color x:Key="BackgroundButtonMouseClickColor">#666666</Color>
     <Image x:Key="ConfigurationIcon" Source="/Resources/Images/Configuration_Icon_Dark_32.png" Width="32" Height="32"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor}"/>
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource ForegroundColor}"/>
+    <SolidColorBrush x:Key="BackgroundButtonBrush" Color="{DynamicResource BackgroundButtonColor}"/>
+    <SolidColorBrush x:Key="BackgroundButtonMouseOverBrush" Color="{DynamicResource BackgroundButtonMouseOverColor}"/>
+    <SolidColorBrush x:Key="BackgroundButtonMouseClickBrush" Color="{DynamicResource BackgroundButtonMouseClickColor}"/>
 </ResourceDictionary>
