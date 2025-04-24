@@ -7,10 +7,11 @@ using System.IO;
 using ImmersionToProjection.Extensions;
 using ImmersionToProjection.Model;
 using ImmersionToProjection.Service.Extraction.Patterns;
+using ImmersionToProjection.Service.Language;
 
 namespace ImmersionToProjection.Service.Extraction;
 
-public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat) : IImmersionExtractor
+public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat, ILanguageKeys languageKeys) : IImmersionExtractor
 {
     public string GetTextToProjection(IEnumerable<ImmersionDay> immersionDays)
     {
@@ -54,7 +55,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         return sbContent.ToString();
     }
 
-    private const string errorMessage = @"Não foi possível identificar o texto para extração da imersão.";
+    private readonly string errorMessage = languageKeys.ErrorImpossibleIdentifyImmersionText;
 
     private async Task<string> GetMessageTitle(string text)
     {

@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImmersionToProjection.View"
         xmlns:viewmodel="clr-namespace:ImmersionToProjection.ViewModel"
+        xmlns:language="clr-namespace:ImmersionToProjection.Service.Language"
         mc:Ignorable="d"
-        Title="Immersion to Projection"
-        Height="450" Width="800"
+        Title="{x:Static language:LanguageKeys.ApplicationTitle}"
+        Height="460" Width="800"
         d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         Style="{DynamicResource {x:Type Window}}"
         Cursor="{Binding CurrentCursor}">

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImmersionToProjection.View"
         xmlns:viewmodel="clr-namespace:ImmersionToProjection.ViewModel"
+        xmlns:language="clr-namespace:ImmersionToProjection.Service.Language"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=viewmodel:ImmersionWeekViewModel}"
@@ -28,7 +29,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Button Grid.Column="0" Grid.Row="0"
-                    Content="Copy to projection"
+                    Content="{x:Static language:LanguageKeys.ButtonCopyToProjection}"
                     Command="{Binding CopyToClipboardCommand}"/>
             <TextBox Grid.Column="2" Grid.Row="0"
                     Text="{Binding MessageTitle, Mode=OneWay}"

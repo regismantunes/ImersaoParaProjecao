@@ -1,4 +1,5 @@
-﻿using ImmersionToProjection.Utility;
+﻿using ImmersionToProjection.Service.Language;
+using ImmersionToProjection.Utility;
 using ImmersionToProjection.View;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -53,7 +54,7 @@ public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseView
     public async Task OnFileDroppedAsync(string filePath)
     {
         CurrentCursor = Cursors.Wait;
-        DropFileMessage = "Extracting immersion points...";
+        DropFileMessage = LanguageKeys.MessageExtractingImmersionPoints;
         VisibilityContentUserControl = Visibility.Collapsed;
         await Task.Delay(15); //Delay to allow UI update
 
@@ -73,7 +74,7 @@ public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseView
         finally
         {
             CurrentCursor = Cursors.Arrow;
-            DropFileMessage = "Drop immersion PDF file here";
+            DropFileMessage = LanguageKeys.MessageDropImmersionPdfFileHere;
         }
     }
 

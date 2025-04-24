@@ -1,5 +1,7 @@
 ﻿using ImmersionToProjection.Service.Configuration;
 using ImmersionToProjection.Service.DynamicResources;
+using ImmersionToProjection.Service.Language;
+using ImmersionToProjection.Utility;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -12,19 +14,20 @@ public class ConfigurationViewModel(
     IThemeManager themeManager
     ) : BaseViewModel
 {
-    public string? Language
+    public KeyValuePairItem? Language
     {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
+        get => Languages.FirstOrDefault(x => x.Key == GetPropertyValue());
+        set => SetProppertyValue(value?.Key);
     }
 
-    public string? Theme
+    public KeyValuePairItem? Theme
     {
-        get => GetPropertyValue();
+        get => Themes.FirstOrDefault(x => x.Key == GetPropertyValue());
         set
         {
-            SetProppertyValue(value);
-            themeManager.ApplyTheme(value);
+            var theme = value?.Key;
+            SetProppertyValue(theme);
+            themeManager.ApplyTheme(theme);
         }
     }
 
@@ -64,19 +67,13 @@ public class ConfigurationViewModel(
         set => SetProppertyValue(value);
     }
 
-    public IEnumerable<string> Languages { get; private set; } =
-        [
-            "Português",
-            "Espanhõl",
-            "English",
-            "Korean",
-        ];
+    public IEnumerable<KeyValuePairItem> Languages => LanguageKeys.AvailableLanguages.Select(x => new KeyValuePairItem(x.Key, x.Value));
 
-    public IEnumerable<string> Themes { get; private set; } =
-        [
-            "Light",
-            "Dark"
-        ];
+    public IEnumerable<KeyValuePairItem> Themes => LanguageKeys.ComboTheme.Split(';').Select(x =>
+    {
+        var pairValue = x.Split('=');
+        return new KeyValuePairItem(pairValue[0], pairValue[1]);
+    });
 
     private string GetPropertyValue([CallerMemberName] string? propertyName = null)
     {
@@ -107,8 +104,7 @@ public class ConfigurationViewModel(
         if (propertyName is null)
             return;
 
-        if (value is null)
-            throw new InvalidOperationException("Value can't be null.");
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
 
         GetConfigurationProperty(propertyName, out var section, out var configurationPropertyName);
 
