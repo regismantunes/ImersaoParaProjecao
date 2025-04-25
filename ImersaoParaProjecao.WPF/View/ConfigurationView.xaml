@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ImmersionToProjection.View"
         xmlns:viewmodel="clr-namespace:ImmersionToProjection.ViewModel"
-        xmlns:language="clr-namespace:ImmersionToProjection.Service.Language"
         d:DataContext="{d:DesignInstance Type=viewmodel:ConfigurationViewModel}"
         mc:Ignorable="d"
         HorizontalAlignment="Stretch"
@@ -25,22 +24,22 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
-               Content="{x:Static language:LanguageKeys.LabelConfiguration}"
+               Content="{Binding LanguageKeys.LabelConfiguration}"
                Margin="0,0,0,10"
                Padding="0,0,0,0"
                Style="{DynamicResource TitleLabel}"/>
             <Label Grid.Column="0" Grid.Row="1"
-               Content="{x:Static language:LanguageKeys.LabelLanguage}"/>
+               Content="{Binding LanguageKeys.LabelLanguage}"/>
             <ComboBox Grid.Column="1" Grid.Row="1"
                   SelectedItem="{Binding Language}"
                   ItemsSource="{Binding Languages}"/>
             <Label Grid.Column="0" Grid.Row="2"
-               Content="{x:Static language:LanguageKeys.LabelTheme}"/>
+               Content="{Binding LanguageKeys.LabelTheme}"/>
             <ComboBox Grid.Column="1" Grid.Row="2"
                   SelectedItem="{Binding Theme}"
                   ItemsSource="{Binding Themes}"/>
             <GroupBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
-                  Header="{x:Static language:LanguageKeys.LabelExtractionParameters}">
+                  Header="{Binding LanguageKeys.LabelExtractionParameters}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -55,27 +54,27 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Column="0" Grid.Row="0"
-                    Content="{x:Static language:LanguageKeys.LabelMessageTtitleFormat}"/>
+                    Content="{Binding LanguageKeys.LabelMessageTtitleFormat}"/>
                     <TextBox Grid.Column="1" Grid.Row="0"
                     Text="{Binding MessageTitleFormat}"/>
                     <Label Grid.Column="0" Grid.Row="1"
-                    Content="{x:Static language:LanguageKeys.LabelMessageHeader}"/>
+                    Content="{Binding LanguageKeys.LabelMessageHeader}"/>
                     <TextBox Grid.Column="1" Grid.Row="1"
                     Text="{Binding RegexMessageHeader}"/>
                     <Label Grid.Column="0" Grid.Row="2"
-                    Content="{x:Static language:LanguageKeys.LabelBibleReading}"/>
+                    Content="{Binding LanguageKeys.LabelBibleReading}"/>
                     <TextBox Grid.Column="1" Grid.Row="2"
                     Text="{Binding RegexBibleReading}"/>
                     <Label Grid.Column="0" Grid.Row="3"
-                    Content="{x:Static language:LanguageKeys.LabelNumber}"/>
+                    Content="{Binding LanguageKeys.LabelNumber}"/>
                     <TextBox Grid.Column="1" Grid.Row="3"
                     Text="{Binding RegexNumber}"/>
                     <Label Grid.Column="0" Grid.Row="4"
-                    Content="{x:Static language:LanguageKeys.LabelImmersionPoint}"/>
+                    Content="{Binding LanguageKeys.LabelImmersionPoint}"/>
                     <TextBox Grid.Column="1" Grid.Row="4"
                     Text="{Binding RegexImmersionPoint}"/>
                     <Label Grid.Column="0" Grid.Row="5"
-                    Content="{x:Static language:LanguageKeys.LabelEndOfDaillyPoint}"/>
+                    Content="{Binding LanguageKeys.LabelEndOfDaillyPoint}"/>
                     <TextBox Grid.Column="1" Grid.Row="5"
                     Text="{Binding RegexEndOfDaillyPoint}"/>
                 </Grid>

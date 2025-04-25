@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImmersionToProjection.View"
         xmlns:viewmodel="clr-namespace:ImmersionToProjection.ViewModel"
-        xmlns:language="clr-namespace:ImmersionToProjection.Service.Language"
         mc:Ignorable="d"
-        Title="{x:Static language:LanguageKeys.ApplicationTitle}"
+        Title="{Binding LanguageKeys.ApplicationTitle}"
         Height="460" Width="800"
         d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         Style="{DynamicResource {x:Type Window}}"
@@ -29,9 +28,16 @@
                     Style="{DynamicResource DropBorder}"
                     Margin="0,0,5,5"
                     Height="33">
-                <TextBlock
-                    Text="{Binding DropFileMessage}"
-                    Style="{DynamicResource DropMessage}"/>
+                <StackPanel>
+                    <TextBlock
+                        Text="{Binding LanguageKeys.MessageDropImmersionPdfFileHere}"
+                        Style="{DynamicResource DropMessage}"
+                        Visibility="{Binding DropFileMessageVisibility}"/>
+                    <TextBlock
+                        Text="{Binding LanguageKeys.MessageExtractingImmersionPoints}"
+                        Style="{DynamicResource DropMessage}"
+                        Visibility="{Binding ExtractingImmersionPointsMessageVisibility}"/>
+                </StackPanel>
             </Border>
             <Button Grid.Row="0" Grid.Column="1"
                     Width="32" Height="32"

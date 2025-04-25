@@ -1,7 +1,9 @@
 ﻿
+using System.ComponentModel;
+
 namespace ImmersionToProjection.Service.Language
 {
-    public interface ILanguageKeys
+    public interface ILanguageKeys : INotifyPropertyChanged
     {
         string ApplicationTitle { get; }
         IDictionary<string, string> AvailableLanguages { get; }

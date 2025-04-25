@@ -5,15 +5,43 @@ using ImmersionToProjection.Utility;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class ConfigurationViewModel(
-    IConfiguration configuration,
-    IConfigurationUpdater configurationUpdater,
-    IThemeManager themeManager
-    ) : BaseViewModel
+public class ConfigurationViewModel : BaseViewModel
 {
+    private readonly IConfigurationManager _configuration;
+    private readonly IThemeManager _themeManager;
+
+    public ConfigurationViewModel(
+        ILanguageKeys languageKeys,
+        IConfigurationManager configuration,
+        IThemeManager themeManager)
+        : base(languageKeys)
+    {
+        configuration.PropertyChanged += Configuration_PropertyChanged;
+        
+        _configuration = configuration;
+        _themeManager = themeManager;
+    }
+
+    private void Configuration_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "Language")
+        {
+            OnPropertyChanged(nameof(ConfigurationViewModel.Language));
+            OnPropertyChanged(nameof(ConfigurationViewModel.Theme));
+            OnPropertyChanged(nameof(ConfigurationViewModel.Themes));
+            RegexImmersionPoint = LanguageKeys.Configuration_Regex_ImmersionPoint;
+            RegexEndOfDaillyPoint = LanguageKeys.Configuration_Regex_EndOfDaillyPoint;
+            RegexMessageHeader = LanguageKeys.Configuration_Regex_MessageHeader;
+            RegexNumber = LanguageKeys.Configuration_Regex_Number;
+            RegexBibleReading = LanguageKeys.Configuration_Regex_BibleReading;
+            MessageTitleFormat = LanguageKeys.Configuration_MessageTitleFormat;
+        }
+    }
+
     public KeyValuePairItem? Language
     {
         get => Languages.FirstOrDefault(x => x.Key == GetPropertyValue());
@@ -27,7 +55,7 @@ public class ConfigurationViewModel(
         {
             var theme = value?.Key;
             SetProppertyValue(theme);
-            themeManager.ApplyTheme(theme);
+            _themeManager.ApplyTheme(theme);
         }
     }
 
@@ -72,7 +100,7 @@ public class ConfigurationViewModel(
     public IEnumerable<KeyValuePairItem> Themes => LanguageKeys.ComboTheme.Split(';').Select(x =>
     {
         var pairValue = x.Split('=');
-        return new KeyValuePairItem(pairValue[0], pairValue[1]);
+        return new KeyValuePairItem(pairValue[1], pairValue[0]);
     });
 
     private string GetPropertyValue([CallerMemberName] string? propertyName = null)
@@ -89,12 +117,12 @@ public class ConfigurationViewModel(
     {
         if (propertyName.StartsWith("Regex"))
         {
-            section = configuration.GetSection("Regex");
+            section = _configuration.GetSection("Regex");
             configurationPropertyName = propertyName[5..];
         }
         else
         {
-            section = configuration;
+            section = _configuration;
             configurationPropertyName = propertyName;
         }
     }
@@ -110,9 +138,7 @@ public class ConfigurationViewModel(
 
         if (section.GetValue<string>(configurationPropertyName) != value)
         {
-            section[configurationPropertyName] = value;
-
-            configurationUpdater.UpdateSetting(
+            _configuration.UpdateSetting(
                 propertyName.StartsWith("Regex") ?
                     string.Concat("Regex:", configurationPropertyName) :
                     configurationPropertyName,

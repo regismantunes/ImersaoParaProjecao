@@ -8,17 +8,27 @@ using System.Windows.Input;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseViewModel
+public class MainWindowViewModel(ILanguageKeys languageKeys) : BaseViewModel(languageKeys)
 {
-    public string DropFileMessage 
+    public Visibility DropFileMessageVisibility
     { 
-        get;
-        private set 
+        get; 
+        private set
         {
             field = value;
             OnPropertyChanged();
         }
-    } = "Drop immersion PDF file here";
+    } = Visibility.Visible;
+
+    public Visibility ExtractingImmersionPointsMessageVisibility
+    {
+        get;
+        private set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = Visibility.Collapsed;
 
     public Visibility VisibilityContentUserControl 
     { 
@@ -40,8 +50,7 @@ public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseView
         }
     } = Cursors.Arrow;
 
-    private readonly ImmersionWeekView _immersionWeekView = immersionWeekView;
-    public UserControl ContentUserControl
+    public UserControl? ContentUserControl
     { 
         get;
         private set
@@ -49,19 +58,20 @@ public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseView
             field = value;
             OnPropertyChanged();
         }
-    } = immersionWeekView;
+    }
 
     public async Task OnFileDroppedAsync(string filePath)
     {
         CurrentCursor = Cursors.Wait;
-        DropFileMessage = LanguageKeys.MessageExtractingImmersionPoints;
+        DropFileMessageVisibility = Visibility.Collapsed;
+        ExtractingImmersionPointsMessageVisibility = Visibility.Visible;
         VisibilityContentUserControl = Visibility.Collapsed;
         await Task.Delay(15); //Delay to allow UI update
 
         try
         {
-            ContentUserControl = _immersionWeekView;
-            if (_immersionWeekView.DataContext is ImmersionWeekViewModel viewModel)
+            ContentUserControl = App.AppHost!.Services.GetRequiredService<ImmersionWeekView>();
+            if (ContentUserControl.DataContext is ImmersionWeekViewModel viewModel)
             {
                 viewModel.LoadImmersionWeek(filePath);
                 VisibilityContentUserControl = Visibility.Visible;
@@ -74,7 +84,8 @@ public class MainWindowViewModel(ImmersionWeekView immersionWeekView) : BaseView
         finally
         {
             CurrentCursor = Cursors.Arrow;
-            DropFileMessage = LanguageKeys.MessageDropImmersionPdfFileHere;
+            DropFileMessageVisibility = Visibility.Visible;
+            ExtractingImmersionPointsMessageVisibility = Visibility.Collapsed;
         }
     }
 

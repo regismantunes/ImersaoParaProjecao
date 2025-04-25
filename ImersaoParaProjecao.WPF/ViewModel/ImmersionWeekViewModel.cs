@@ -1,12 +1,14 @@
 ﻿using ImmersionToProjection.Extensions;
 using ImmersionToProjection.Model;
 using ImmersionToProjection.Service.Extraction;
+using ImmersionToProjection.Service.Language;
 using ImmersionToProjection.Utility;
 using System.Windows;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class ImmersionWeekViewModel(IImmersionExtractor immersionExtractor, IFormatProvider formatProvider) : BaseViewModel
+public class ImmersionWeekViewModel(ILanguageKeys languageKeys, IImmersionExtractor immersionExtractor, IFormatProvider formatProvider)
+    : BaseViewModel(languageKeys)
 {
     private ImmersionWeek? ImmersionWeek { get; set; }
     public string? ImmersionWeekText { get; private set; }

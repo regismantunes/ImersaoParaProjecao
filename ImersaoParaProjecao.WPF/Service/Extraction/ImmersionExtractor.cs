@@ -55,13 +55,13 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         return sbContent.ToString();
     }
 
-    private readonly string errorMessage = languageKeys.ErrorImpossibleIdentifyImmersionText;
+    private readonly string _errorMessage = languageKeys.ErrorImpossibleIdentifyImmersionText;
 
     private async Task<string> GetMessageTitle(string text)
     {
         var matchTitle = regexHelper.GetMessageHeader().Match(text);
         if (!matchTitle.Success)
-            throw new InvalidDataException(errorMessage);
+            throw new InvalidDataException(_errorMessage);
 
         var n = matchTitle.Index + matchTitle.Length + 1;
         var matchMessageNumber = regexHelper.GetNumber().Match(matchTitle.Value);
@@ -101,7 +101,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             if (!matchStart.Success)
             {
                 if (d == 0)
-                    throw new InvalidDataException(errorMessage);
+                    throw new InvalidDataException(_errorMessage);
 
                 break;
             }
@@ -111,7 +111,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             var matchPoints = regexHelper.GetEndOfDaillyPoint()
                 .Match(text[i..]);
             if (!matchPoints.Success)
-                throw new InvalidDataException(errorMessage);
+                throw new InvalidDataException(_errorMessage);
 
             var dailyPointsText = text
                 .Substring(i, matchPoints.Index - 1)

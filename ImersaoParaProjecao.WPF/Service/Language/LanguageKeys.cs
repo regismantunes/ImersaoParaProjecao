@@ -1,11 +1,41 @@
-﻿using System.Globalization;
+﻿using ImmersionToProjection.Service.Configuration;
+using Microsoft.Extensions.Configuration;
+using System.ComponentModel;
+using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
 
 namespace ImmersionToProjection.Service.Language;
 
 public class LanguageKeys : ILanguageKeys
 {
+    private readonly IConfiguration _configuration;
+
+    public LanguageKeys(IConfigurationManager configuration)
+    {
+        configuration.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == "Language")
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+
+                var properties = GetType()
+                    .GetProperties()
+                    .Where(p => !p.CanWrite)
+                    .Where(p => p.CanRead)
+                    .Where(p=> p.PropertyType == typeof(string));
+                
+                foreach (var property in properties)
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property.Name));
+            }
+        };
+
+        _configuration = configuration;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public IDictionary<string, string> AvailableLanguages =>
         new Dictionary<string, string>
         {
@@ -47,6 +77,13 @@ public class LanguageKeys : ILanguageKeys
     {
         ArgumentNullException.ThrowIfNullOrEmpty(key, nameof(key));
 
-        return _resourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? string.Empty;
+        var language = _configuration["Language"];
+
+        if (string.IsNullOrEmpty(language))
+            language = "pt-BR";
+
+        var culture = CultureInfo.GetCultureInfo(language);
+
+        return _resourceManager.GetString(key, culture) ?? string.Empty;
     }
 }
