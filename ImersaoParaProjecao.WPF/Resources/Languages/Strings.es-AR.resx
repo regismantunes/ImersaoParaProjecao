@@ -139,13 +139,13 @@
     <value>(ESCRIBA A CONTINUACIÓN LA LUZ EN LA PALABRA)</value>
   </data>
   <data name="Configuration_Regex_ImmersionPoint" xml:space="preserve">
-    <value>^\\d+\\.</value>
+    <value>^\d+\.</value>
   </data>
   <data name="Configuration_Regex_MessageHeader" xml:space="preserve">
-    <value>(\\s*Mensaje \\d+)</value>
+    <value>(\s*Mensaje \d+)</value>
   </data>
   <data name="Configuration_Regex_Number" xml:space="preserve">
-    <value>\\d+</value>
+    <value>\d+</value>
   </data>
   <data name="Configuration_Theme" xml:space="preserve">
     <value>Dark</value>

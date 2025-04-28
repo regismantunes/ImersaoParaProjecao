@@ -139,13 +139,13 @@
     <value>(ANOTE ABAIXO A LUZ NA PALAVRA|ANOTE ABAIXO O SENTIMENTO RECEBIDO DO SENHOR AO IMERGIR NOS PONTOS ACIMA)</value>
   </data>
   <data name="Configuration_Regex_ImmersionPoint" xml:space="preserve">
-    <value>^\\d+\\.</value>
+    <value>^\d+\.</value>
   </data>
   <data name="Configuration_Regex_MessageHeader" xml:space="preserve">
-    <value>(\\s*Mens\\. \\d+|\\s*Mensagem \\d+|Reunião de Abertura)</value>
+    <value>(\s*Mens\. \d+|\s*Mensagem \d+|Reunião de Abertura)</value>
   </data>
   <data name="Configuration_Regex_Number" xml:space="preserve">
-    <value>\\d+</value>
+    <value>\d+</value>
   </data>
   <data name="Configuration_Theme" xml:space="preserve">
     <value>Dark</value>
