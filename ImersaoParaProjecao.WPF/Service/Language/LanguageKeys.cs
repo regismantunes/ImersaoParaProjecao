@@ -39,10 +39,12 @@ public class LanguageKeys : ILanguageKeys
     public IDictionary<string, string> AvailableLanguages =>
         new Dictionary<string, string>
         {
-            { "en-US", "English" },
-            { "es-AR", "Espanhõl" },
-            { "pt-BR", "Português" }
+            { "en", "English" },
+            { "es", "Espanhõl" },
+            { "pt", "Português" }
         };
+
+    public string DefaultLanguage => "en";
 
     public string ApplicationTitle => GetString();
     public string ButtonCopyToProjection => GetString();
@@ -80,7 +82,7 @@ public class LanguageKeys : ILanguageKeys
         var language = _configuration["Language"];
 
         if (string.IsNullOrEmpty(language))
-            language = "pt-BR";
+            language = DefaultLanguage;
 
         var culture = CultureInfo.GetCultureInfo(language);
 

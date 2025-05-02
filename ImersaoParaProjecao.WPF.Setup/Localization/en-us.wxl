@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="ProductName">Immersion to Projection</String>
+  <String Id="Manufactorer">Régis Antunes</String>
+  <String Id="CreateDesktopShortcutLabel">Create a shortcut on the Desktop</String>
+  <String Id="ShortcutDescription">Launch Immersion to Projection</String>
+  <String Id="InstallDirDlg_Title">{\WixUI_Font_Bigger}Installation Folder</String>
+  <String Id="InstallDirDlgFolderLabel">Install !(loc.ProductName) to:</String>
+  <String Id="InstallDirDlgChange">Change...</String>
+  <String Id="WixUIBack">&amp;Back</String>
+  <String Id="WixUINext">&amp;Next</String>
+  <String Id="WixUICancel">Cancel</String>
+  <String Id="DowngradeErrorMessage">A newer version of Immersion to Projection is already installed.</String>
+</WixLocalization>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Inmersión para proyección</value>
+    <value>Inmersión para Proyección</value>
   </data>
   <data name="ButtonCopyToProjection" xml:space="preserve">
     <value>Copiar a proyección</value>

@@ -16,12 +16,12 @@ namespace ImmersionToProjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration, string configurationFilePath)
     {
         services
             //Services
             //Singletons
-            .AddSingleton<IConfigurationManager>(s => new ConfigurationManager(configuration, "appsettings.json"))
+            .AddSingleton<IConfigurationManager>(s => new ConfigurationManager(configuration, configurationFilePath))
             .AddSingleton<ILanguageKeys, LanguageKeys>()
             //Transients
             .AddTransient<IRegexHelper>(_ => new RegexHelper(RegexPatternsFactory.CreateFromConfiguration(configuration)))

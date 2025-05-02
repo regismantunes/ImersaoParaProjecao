@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <?define VersionNumber="!(bind.fileVersion.MainExecutable)"?>
+  <?define MainFileName="ImmersionToProjection.exe"?>
+  <?define ReleaseDirectory="..\ImersaoParaProjecao.WPF\bin\Release\net10.0-windows7.0\publish\win-x64\"?>
+  <?define ProjectDirectory="..\ImersaoParaProjecao.WPF\"?>
+  <?define InstallationDirectory="ImmersionToProjection"?>
+
+  <Product Id="*"
+           Name="!(loc.ProductName)"
+           Language="1033"
+           Version="$(var.VersionNumber)"
+           Manufacturer="!(loc.Manufactorer)"
+           UpgradeCode="8b386c96-ffcd-4aca-92d2-29da8fab9583"
+           Codepage="65001">
+
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perMachine"
+             Platform="x64"
+             Languages="1033,1034,1046"/>
+
+    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="Icon.exe" SourceFile="$(var.ReleaseDirectory)$(var.MainFileName)" />
+	  
+    <UIRef Id="WixUI_InstallDir" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="$(var.InstallationDirectory)">
+          <Component Id="MainApplicationComponent" Guid="a484534c-b614-4d9b-95fa-9daf7cf224b9" Win64="yes"> 
+            <File Id="MainExecutable"               Source="$(var.ReleaseDirectory)$(var.MainFileName)" KeyPath="yes" Checksum="yes"/>
+			<File Id="D3DCompiler_47_cor3.dll"      Source="$(var.ReleaseDirectory)D3DCompiler_47_cor3.dll" Checksum="yes"/>
+			<File Id="PenImc_cor3.dll"              Source="$(var.ReleaseDirectory)PenImc_cor3.dll" Checksum="yes"/>
+			<File Id="PresentationNative_cor3.dll"  Source="$(var.ReleaseDirectory)PresentationNative_cor3.dll" Checksum="yes"/>
+			<File Id="vcruntime140_cor3.dll"        Source="$(var.ReleaseDirectory)vcruntime140_cor3.dll" Checksum="yes"/>
+			<File Id="wpfgfx_cor3.dll"              Source="$(var.ReleaseDirectory)wpfgfx_cor3.dll" Checksum="yes"/>
+            <RemoveFile Id="CleanUpInstallFolder" Name="*.*" On="uninstall"/> 
+            <RemoveFolder Id="DeleteInstallFolder" On="uninstall" />
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="AppDataFolder">
+        <Directory Id="AppDataProductFolder" Name="!(loc.ProductName)">
+            <Component Id="AppSettingsComponent" Guid="691a36d7-b086-47b0-8b84-14d2f53d1d17"> 
+                <File Id="appsettings.json" Source="$(var.ReleaseDirectory)appsettings.json" Checksum="yes"/>
+                <RegistryValue Root="HKCU" Key="Software\!(loc.ProductName)" Name="AppSettingsInstalled" Type="integer" Value="1" KeyPath="yes"/>
+                <RemoveFile Id="RemoveAppSettings" Name="appsettings.json" On="uninstall"/> 
+                <RemoveFolder Id="RemoveAppDataProductFolder" Directory="AppDataProductFolder" On="uninstall" />
+            </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ProgramMenuProductFolder" Name="!(loc.ProductName)">
+          <Component Id="StartMenuShortcutComponent" Guid="e434d66d-2ebf-4541-96ce-df0ee32f6033">
+            <Shortcut Id="StartMenuShortcut"
+                      Name="!(loc.ProductName)"
+                      Description="!(loc.ShortcutDescription)"
+                      Target="[#MainExecutable]"
+                      WorkingDirectory="INSTALLFOLDER"
+                      Icon="Icon.exe"/>
+            <RemoveFolder Id="RemoveProgramMenuProductFolder" On="uninstall"/>
+            <RegistryValue Root="HKCU" Key="Software\!(loc.ProductName)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop">
+         <Component Id="DesktopShortcutComponent" Guid="10737892-c00c-4567-83f6-2462781b165e">
+            <Shortcut Id="DesktopShortcut"
+                      Name="!(loc.ProductName)"
+                      Description="!(loc.ShortcutDescription)"
+                      Target="[#MainExecutable]"
+                      WorkingDirectory="INSTALLFOLDER"
+                      Icon="Icon.exe"/>
+            <RegistryValue Root="HKCU" Key="Software\!(loc.ProductName)" Name="desktop_shortcut" Type="integer" Value="1" KeyPath="yes"/>
+            <RemoveFile Id="RemoveDesktopShortcut" Name="!(loc.ProductName).lnk" On="uninstall"/> 
+         </Component>
+      </Directory>
+
+    </Directory>
+
+    <Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
+      <ComponentRef Id="MainApplicationComponent" />
+      <ComponentRef Id="AppSettingsComponent" />
+      <ComponentRef Id="StartMenuShortcutComponent" />
+      <ComponentRef Id="DesktopShortcutComponent" />
+    </Feature>
+
+  </Product>
+</Wix>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="es-es" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="ProductName">Inmersión para Proyección</String>
+  <String Id="Manufactorer">Régis Antunes</String>
+  <String Id="CreateDesktopShortcutLabel">Crear un acceso directo en el Escritorio</String>
+  <String Id="ShortcutDescription">Iniciar Inmersión para Proyección</String>
+  <String Id="InstallDirDlg_Title">{\WixUI_Font_Bigger}Carpeta de Instalación</String>
+  <String Id="InstallDirDlgFolderLabel">Instalar !(loc.ProductName) en:</String>
+  <String Id="InstallDirDlgChange">Cambiar...</String>
+  <String Id="WixUIBack">&amp;Atrás</String>
+  <String Id="WixUINext">&amp;Siguiente</String>
+  <String Id="WixUICancel">Cancelar</String>
+  <String Id="DowngradeErrorMessage">Ya está instalada una versión más nueva de Inmersión para Proyección.</String>
+</WixLocalization>

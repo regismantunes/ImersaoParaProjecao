@@ -7,6 +7,7 @@ namespace ImmersionToProjection.Service.Language
     {
         string ApplicationTitle { get; }
         IDictionary<string, string> AvailableLanguages { get; }
+        string DefaultLanguage { get; }
         string ButtonCopyToProjection { get; }
         string ComboTheme { get; }
         string Configuration_Language { get; }
