@@ -11,6 +11,7 @@ using ImmersionToProjection.Service.DynamicResources;
 using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
 using ConfigurationManager = ImmersionToProjection.Service.Configuration.ConfigurationManager;
 using ImmersionToProjection.Service.Language;
+using ImmersionToProjection.Service.ViewFactory;
 
 namespace ImmersionToProjection.Extensions;
 
@@ -23,6 +24,8 @@ public static class ServiceCollectionExtensions
             //Singletons
             .AddSingleton<IConfigurationManager>(s => new ConfigurationManager(configuration, configurationFilePath))
             .AddSingleton<ILanguageKeys, LanguageKeys>()
+            .AddSingleton<IThemeManager, ThemeManager>()
+            .AddSingleton<IImmersionWeekViewFactory, ImmersionWeekViewFactory>()
             //Transients
             .AddTransient<IRegexHelper>(_ => new RegexHelper(RegexPatternsFactory.CreateFromConfiguration(configuration)))
             .AddTransient<IFormatProvider>(_ => CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "pt-BR"))
@@ -32,7 +35,6 @@ public static class ServiceCollectionExtensions
                     s.GetRequiredService<IFormatProvider>(),
                     configuration.GetValueValidating("MessageTitleFormat"),
                     s.GetRequiredService<ILanguageKeys>()))
-            .AddSingleton<IThemeManager, ThemeManager>()
             //MainWindow
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton(s => new MainWindowView()

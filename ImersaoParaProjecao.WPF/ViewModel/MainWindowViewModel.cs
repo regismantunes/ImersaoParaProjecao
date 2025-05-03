@@ -1,4 +1,5 @@
 ﻿using ImmersionToProjection.Service.Language;
+using ImmersionToProjection.Service.ViewFactory;
 using ImmersionToProjection.Utility;
 using ImmersionToProjection.View;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class MainWindowViewModel(ILanguageKeys languageKeys) : BaseViewModel(languageKeys)
+public class MainWindowViewModel(ILanguageKeys languageKeys, IImmersionWeekViewFactory immersionWeekViewFactory) : BaseViewModel(languageKeys)
 {
     public Visibility DropFileMessageVisibility
     { 
@@ -70,12 +71,9 @@ public class MainWindowViewModel(ILanguageKeys languageKeys) : BaseViewModel(lan
 
         try
         {
-            ContentUserControl = App.AppHost!.Services.GetRequiredService<ImmersionWeekView>();
-            if (ContentUserControl.DataContext is ImmersionWeekViewModel viewModel)
-            {
-                viewModel.LoadImmersionWeek(filePath);
+            ContentUserControl = immersionWeekViewFactory.CreateImmersionWeekView(filePath);
+            if (ContentUserControl is not null)
                 VisibilityContentUserControl = Visibility.Visible;
-            }
         }
         catch (Exception ex)
         {
