@@ -1,5 +1,4 @@
-﻿using ImmersionToProjection.Service.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
@@ -14,24 +13,33 @@ public class LanguageKeys : ILanguageKeys
 
     public LanguageKeys(IConfigurationManager configuration)
     {
-        configuration.PropertyChanged += (s, e) =>
-        {
-            if (e.PropertyName == "Language")
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
-
-                var properties = GetType()
-                    .GetProperties()
-                    .Where(p => !p.CanWrite)
-                    .Where(p => p.CanRead)
-                    .Where(p=> p.PropertyType == typeof(string));
-                
-                foreach (var property in properties)
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property.Name));
-            }
-        };
+        configuration.PropertyChanged += Configuration_PropertyChanged;
 
         _configuration = configuration;
+    }
+
+    private void Configuration_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != "Language")
+            return;
+
+        _configuration["Regex:ImmersionPoint"] = Configuration_Regex_ImmersionPoint;
+        _configuration["Regex:EndOfDaillyPoint"] = Configuration_Regex_EndOfDaillyPoint;
+        _configuration["Regex:MessageHeader"] = Configuration_Regex_MessageHeader;
+        _configuration["Regex:Number"] = Configuration_Regex_Number;
+        _configuration["Regex:BibleReading"] = Configuration_Regex_BibleReading;
+        _configuration["MessageTitleFormat"] = Configuration_MessageTitleFormat;
+
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+
+        var properties = GetType()
+            .GetProperties()
+            .Where(p => !p.CanWrite)
+            .Where(p => p.CanRead)
+            .Where(p => p.PropertyType == typeof(string));
+
+        foreach (var property in properties)
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property.Name));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

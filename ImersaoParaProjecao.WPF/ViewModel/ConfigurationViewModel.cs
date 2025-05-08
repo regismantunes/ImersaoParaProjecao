@@ -28,18 +28,18 @@ public class ConfigurationViewModel : BaseViewModel
 
     private void Configuration_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "Language")
-        {
-            OnPropertyChanged(nameof(ConfigurationViewModel.Language));
-            OnPropertyChanged(nameof(ConfigurationViewModel.Theme));
-            OnPropertyChanged(nameof(ConfigurationViewModel.Themes));
-            RegexImmersionPoint = LanguageKeys.Configuration_Regex_ImmersionPoint;
-            RegexEndOfDaillyPoint = LanguageKeys.Configuration_Regex_EndOfDaillyPoint;
-            RegexMessageHeader = LanguageKeys.Configuration_Regex_MessageHeader;
-            RegexNumber = LanguageKeys.Configuration_Regex_Number;
-            RegexBibleReading = LanguageKeys.Configuration_Regex_BibleReading;
-            MessageTitleFormat = LanguageKeys.Configuration_MessageTitleFormat;
-        }
+        if (e.PropertyName != "Language")
+            return;
+
+        OnPropertyChanged(nameof(ConfigurationViewModel.Language));
+        OnPropertyChanged(nameof(ConfigurationViewModel.Theme));
+        OnPropertyChanged(nameof(ConfigurationViewModel.Themes));
+        OnPropertyChanged(nameof(RegexImmersionPoint));
+        OnPropertyChanged(nameof(RegexEndOfDaillyPoint));
+        OnPropertyChanged(nameof(RegexMessageHeader));
+        OnPropertyChanged(nameof(RegexNumber));
+        OnPropertyChanged(nameof(RegexBibleReading));
+        OnPropertyChanged(nameof(MessageTitleFormat));
     }
 
     public KeyValuePairItem? Language
