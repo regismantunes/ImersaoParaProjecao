@@ -130,7 +130,7 @@
     <value>es-AR</value>
   </data>
   <data name="Configuration_MessageTitleFormat" xml:space="preserve">
-    <value>Mensaje {0}: {1} ({2})</value>
+    <value>Mensaje {N}: {T} ({B})</value>
   </data>
   <data name="Configuration_Regex_BibleReading" xml:space="preserve">
     <value>Lectura Bíblica</value>
@@ -177,7 +177,10 @@
   <data name="LabelMessageHeader" xml:space="preserve">
     <value>Encabezado del mensaje:</value>
   </data>
-  <data name="LabelMessageTtitleFormat" xml:space="preserve">
+  <data name="LabelMessageTitleFormatTip" xml:space="preserve">
+    <value>Puedes formatear el título del mensaje como quieras. Usa {N} para el número del mensaje, {T} para el título y {B} para la lectura bíblica. Puedes insertar ceros fijos en el número del mensaje con {N:00}, mayúsculas para el título o la lectura bíblica con {T:U} o {B:U}, o minúsculas con {T:L} o {B:L}.</value>
+  </data>
+  <data name="LabelMessageTitleFormat" xml:space="preserve">
     <value>Formato del título del mensaje:</value>
   </data>
   <data name="LabelNumber" xml:space="preserve">

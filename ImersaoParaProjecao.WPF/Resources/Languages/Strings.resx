@@ -130,7 +130,7 @@
     <value>en-US</value>
   </data>
   <data name="Configuration_MessageTitleFormat" xml:space="preserve">
-    <value>Message {0}: {1} ({2})</value>
+    <value>Message {N}: {T} ({B})</value>
   </data>
   <data name="Configuration_Regex_BibleReading" xml:space="preserve">
     <value>Bible Reading</value>
@@ -177,7 +177,10 @@
   <data name="LabelMessageHeader" xml:space="preserve">
     <value>Message header:</value>
   </data>
-  <data name="LabelMessageTtitleFormat" xml:space="preserve">
+  <data name="LabelMessageTitleFormatTip" xml:space="preserve">
+    <value>You can format the message title as you want. Use {N} to message number, {T} to message title and {B} to bible reading. You can insert fixed zeros on message number with {N:00} or upper case for title or bible reading with {T:U} or {B:U}, or lower case with {T:L} or {B:L}.</value>
+  </data>
+  <data name="LabelMessageTitleFormat" xml:space="preserve">
     <value>Message title format:</value>
   </data>
   <data name="LabelNumber" xml:space="preserve">

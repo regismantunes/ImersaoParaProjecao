@@ -8,10 +8,11 @@ using ImmersionToProjection.Extensions;
 using ImmersionToProjection.Model;
 using ImmersionToProjection.Service.Extraction.Patterns;
 using ImmersionToProjection.Service.Language;
+using ImmersionToProjection.Service.Formatter;
 
 namespace ImmersionToProjection.Service.Extraction;
 
-public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat, ILanguageKeys languageKeys) : IImmersionExtractor
+public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat, ICaseStringFormat titleFormatter, ILanguageKeys languageKeys) : IImmersionExtractor
 {
     public string GetTextToProjection(IEnumerable<ImmersionDay> immersionDays)
     {
@@ -80,7 +81,11 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             var o = n + matchBibleReading.Index + matchBibleReading.Length + 1;
             var p = o + text[o..].IndexOf('\n');
             var bibleReading = text[o..p].TrimSpecialCharacters();
-            messageTitle = string.Format(messageTitleFormat, Convert.ToInt16(matchMessageNumber.Value), singleMessageTitle, bibleReading);
+            var functionalMessageTitleFormat = messageTitleFormat
+                .ReplaceFormatVariable("N", 0)
+                .ReplaceFormatVariable("T", 1)
+                .ReplaceFormatVariable("B", 2);
+            messageTitle = string.Format(titleFormatter, functionalMessageTitleFormat, Convert.ToInt16(matchMessageNumber.Value), singleMessageTitle, bibleReading);
         }
 
         return await Task.FromResult(messageTitle);

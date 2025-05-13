@@ -74,7 +74,8 @@ public class LanguageKeys : ILanguageKeys
     public string LabelImmersionPoint => GetString();
     public string LabelLanguage => GetString();
     public string LabelMessageHeader => GetString();
-    public string LabelMessageTtitleFormat => GetString();
+    public string LabelMessageTitleFormat => GetString();
+    public string LabelMessageTitleFormatTip => GetString();
     public string LabelNumber => GetString();
     public string LabelTheme => GetString();
     public string MessageDropImmersionPdfFileHere => GetString();

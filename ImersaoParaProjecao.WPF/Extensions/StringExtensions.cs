@@ -47,4 +47,11 @@ public static class StringExtensions
         return trimmed;
     }
 
+    public static string ReplaceFormatVariable(this string text, string variableName, object value)
+    {
+        return Regex.Replace(text, $@"(?<variable>\{{\s*{variableName}\s*)(?<end>(\}}|\:))", match =>
+        {
+            return string.Concat("{", value.ToString() ?? string.Empty, match.Groups["end"].Value);
+        });
+    }
 }

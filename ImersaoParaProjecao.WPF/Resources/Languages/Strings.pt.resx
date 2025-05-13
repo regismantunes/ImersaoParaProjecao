@@ -130,7 +130,7 @@
     <value>pt-BR</value>
   </data>
   <data name="Configuration_MessageTitleFormat" xml:space="preserve">
-    <value>Mens. {0}: {1} ({2})</value>
+    <value>Mens. {N}: {T} ({B})</value>
   </data>
   <data name="Configuration_Regex_BibleReading" xml:space="preserve">
     <value>Leitura Bíblica</value>
@@ -177,7 +177,10 @@
   <data name="LabelMessageHeader" xml:space="preserve">
     <value>Cabeçalho da mensagem:</value>
   </data>
-  <data name="LabelMessageTtitleFormat" xml:space="preserve">
+  <data name="LabelMessageTitleFormatTip" xml:space="preserve">
+    <value>Você pode formatar o título da mensagem como quiser. Use {N} para o número da mensagem, {T} para o título da mensagem e {B} para a leitura bíblica. Você pode inserir zeros fixos no número da mensagem com {N:00} ou letras maiúsculas para o título ou a leitura bíblica com {T:U} ou {B:U}, ou letras minúsculas com {T:L} ou {B:L}.</value>
+  </data>
+  <data name="LabelMessageTitleFormat" xml:space="preserve">
     <value>Formato do título da mensagem:</value>
   </data>
   <data name="LabelNumber" xml:space="preserve">

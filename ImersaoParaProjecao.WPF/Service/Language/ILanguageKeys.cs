@@ -27,7 +27,8 @@ namespace ImmersionToProjection.Service.Language
         string LabelImmersionPoint { get; }
         string LabelLanguage { get; }
         string LabelMessageHeader { get; }
-        string LabelMessageTtitleFormat { get; }
+        string LabelMessageTitleFormat { get; }
+        string LabelMessageTitleFormatTip { get; }
         string LabelNumber { get; }
         string LabelTheme { get; }
         string MessageDropImmersionPdfFileHere { get; }
