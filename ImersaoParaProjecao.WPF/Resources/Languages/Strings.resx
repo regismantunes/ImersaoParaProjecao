@@ -126,30 +126,6 @@
   <data name="ComboTheme" xml:space="preserve">
     <value>Dark=Dark;Light=Light</value>
   </data>
-  <data name="Configuration_Language" xml:space="preserve">
-    <value>en-US</value>
-  </data>
-  <data name="Configuration_MessageTitleFormat" xml:space="preserve">
-    <value>Message {N}: {T} ({B})</value>
-  </data>
-  <data name="Configuration_Regex_BibleReading" xml:space="preserve">
-    <value>Bible Reading</value>
-  </data>
-  <data name="Configuration_Regex_EndOfDaillyPoint" xml:space="preserve">
-    <value>(WRITE DOWN THE LIGHT IN THE WORD)</value>
-  </data>
-  <data name="Configuration_Regex_ImmersionPoint" xml:space="preserve">
-    <value>^\d+\.</value>
-  </data>
-  <data name="Configuration_Regex_MessageHeader" xml:space="preserve">
-    <value>(\s*Msg\. \d+|\s*Message \d+)</value>
-  </data>
-  <data name="Configuration_Regex_Number" xml:space="preserve">
-    <value>\d+</value>
-  </data>
-  <data name="Configuration_Theme" xml:space="preserve">
-    <value>Dark</value>
-  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>

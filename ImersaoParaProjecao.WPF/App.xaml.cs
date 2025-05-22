@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
-using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
 
 namespace ImmersionToProjection;
 
@@ -28,10 +27,8 @@ public partial class App : Application
 #endif
 
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(configureDelegate => 
-                configureDelegate.AddJsonFile(configurationFilePath, true))
-            .ConfigureServices((hostContext, services) => 
-                services.AddServices(hostContext.Configuration, configurationFilePath))
+            .ConfigureAppConfiguration(configureDelegate => configureDelegate.AddJsonFile(configurationFilePath, false))
+            .ConfigureServices((hostContext, services) => services.AddServices(hostContext.Configuration, configurationFilePath))
             .Build();
     }
 
@@ -52,21 +49,21 @@ public partial class App : Application
     private static void ApplyTheme()
     {
         var themeManager = AppHost!.Services.GetRequiredService<IThemeManager>();
-        var theme = AppHost.Services.GetRequiredService<IConfiguration>().GetValue<string>("Theme");
-        themeManager.ApplyTheme(theme);
+        var configuration = AppHost.Services.GetRequiredService<IAppConfiguration>();
+        themeManager.ApplyTheme(configuration.Theme);
     }
 
     private static void ApplyLanguage()
     {
-        var configurationManager = AppHost!.Services.GetRequiredService<IConfigurationManager>();
-        var language = configurationManager["Language"];
+        var configuration = AppHost!.Services.GetRequiredService<IAppConfiguration>();
+        var language = configuration.Language;
         if (string.IsNullOrEmpty(language))
         {
             var currentCulture = System.Globalization.CultureInfo.CurrentCulture.Name.Split('-').First();
             var languageKeys = AppHost!.Services.GetRequiredService<ILanguageKeys>();
-            configurationManager["Language"] = languageKeys.AvailableLanguages.ContainsKey(currentCulture) ?
-                                                currentCulture :
-                                                languageKeys.DefaultLanguage;
+            configuration.Language = languageKeys.AvailableLanguages.ContainsKey(currentCulture) ?
+                                        currentCulture :
+                                        languageKeys.DefaultLanguage;
         }
     }
 

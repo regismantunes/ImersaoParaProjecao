@@ -12,7 +12,7 @@ using ImmersionToProjection.Service.Formatter;
 
 namespace ImmersionToProjection.Service.Extraction;
 
-public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider formatProvider, string messageTitleFormat, ICaseStringFormat titleFormatter, ILanguageKeys languageKeys) : IImmersionExtractor
+public class ImmersionExtractor(IPatternsHelper patternsHelper, ILanguageKeys languageKeys) : IImmersionExtractor
 {
     public string GetTextToProjection(IEnumerable<ImmersionDay> immersionDays)
     {
@@ -23,7 +23,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             foreach (var immersionItem in immersionDay.Items)
             {
                 sbFinal
-                    .AppendLine(immersionDay.Day.GetLocalizedName(formatProvider))
+                    .AppendLine(patternsHelper.GetLocalizedName(immersionDay.Day))
                     .AppendLine(immersionItem)
                     .AppendLine();
             }
@@ -60,17 +60,24 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
 
     private async Task<string> GetMessageTitle(string text)
     {
-        var matchTitle = regexHelper.GetMessageHeader().Match(text);
+        Match? matchTitle;
+        do
+        {
+            matchTitle = patternsHelper.GetMessageHeader().Match(text);
+            if (matchTitle.Success)
+                break;
+        } while (patternsHelper.MoveNext());
+
         if (!matchTitle.Success)
             throw new InvalidDataException(_errorMessage);
 
         var n = matchTitle.Index + matchTitle.Length + 1;
-        var matchMessageNumber = regexHelper.GetNumber().Match(matchTitle.Value);
-        var matchBibleReading = regexHelper.GetBibleReading().Match(text[n..]);
+        var matchMessageNumber = patternsHelper.GetNumber().Match(matchTitle.Value);
+        var matchBibleReading = patternsHelper.GetBibleReading().Match(text[n..]);
         string messageTitle;
         if (!matchBibleReading.Success ||
             !matchMessageNumber.Success)
-            messageTitle = matchTitle.Value;
+            messageTitle = patternsHelper.GetMessageTitle(matchTitle.Value);
         else
         {
             var singleMessageTitle = text[n..(n + matchBibleReading.Index)]
@@ -81,11 +88,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
             var o = n + matchBibleReading.Index + matchBibleReading.Length + 1;
             var p = o + text[o..].IndexOf('\n');
             var bibleReading = text[o..p].TrimSpecialCharacters();
-            var functionalMessageTitleFormat = messageTitleFormat
-                .ReplaceFormatVariable("N", 0)
-                .ReplaceFormatVariable("T", 1)
-                .ReplaceFormatVariable("B", 2);
-            messageTitle = string.Format(titleFormatter, functionalMessageTitleFormat, Convert.ToInt16(matchMessageNumber.Value), singleMessageTitle, bibleReading);
+            messageTitle = patternsHelper.GetMessageTitle(Convert.ToInt16(matchMessageNumber.Value), singleMessageTitle, bibleReading);
         }
 
         return await Task.FromResult(messageTitle);
@@ -101,7 +104,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         for (var d = 0; d < daysOfWeek.Length; d++)
         {
             var dayOfWeek = daysOfWeek[d];
-            var dayOfWeekName = dayOfWeek.GetLocalizedName(formatProvider);
+            var dayOfWeekName = patternsHelper.GetLocalizedName(dayOfWeek);
             var matchStart = Regex.Match(text, $@"\s+{dayOfWeekName}\s+", RegexOptions.IgnoreCase);
             if (!matchStart.Success)
             {
@@ -113,7 +116,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
 
             var i = matchStart.Index + matchStart.Length;
 
-            var matchPoints = regexHelper.GetEndOfDaillyPoint()
+            var matchPoints = patternsHelper.GetEndOfDaillyPoint()
                 .Match(text[i..]);
             if (!matchPoints.Success)
                 throw new InvalidDataException(_errorMessage);
@@ -126,7 +129,7 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
                 .Where(x => x.Length > 0)
                 .Aggregate((a, b) =>
                 {
-                    if (regexHelper.GetImmersionPoint().IsMatch(b))
+                    if (patternsHelper.GetImmersionPoint().IsMatch(b))
                         return string.Concat(a, "\n", b);
                     if (a.EndsWith('-'))
                         return string.Concat(a, b);
@@ -135,7 +138,12 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
 
             var pointMatches = dailyPointsText.Split('\n');
 
-            immersionDays.Add(new ImmersionDay() { Day = dayOfWeek, Items = pointMatches });
+            immersionDays.Add(new ImmersionDay() 
+            { 
+                Day = dayOfWeek,
+                DayName = dayOfWeekName,
+                Items = pointMatches
+            });
         }
 
         return await Task.FromResult(immersionDays.OrderBy(d => d.Day == DayOfWeek.Sunday ? 7 : (int)d.Day));
@@ -149,7 +157,8 @@ public class ImmersionExtractor(IRegexHelper regexHelper, IFormatProvider format
         Task.WaitAll(messageTitleTask, immersionDaysTask);
 
         return new ImmersionWeek 
-        { 
+        {
+            Language = patternsHelper.GetLanguage(),
             MessageTitle = messageTitleTask.Result, 
             ImmersionDays = immersionDaysTask.Result 
         };

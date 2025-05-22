@@ -1,27 +1,44 @@
-﻿using ImmersionToProjection.Service.Configuration;
+﻿using ImmersionToProjection.Extensions;
+using ImmersionToProjection.Service.Configuration;
 using ImmersionToProjection.Service.DynamicResources;
+using ImmersionToProjection.Service.Extraction.Patterns;
 using ImmersionToProjection.Service.Language;
 using ImmersionToProjection.Utility;
-using Microsoft.Extensions.Configuration;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
+using System.Text.Json;
 
 namespace ImmersionToProjection.ViewModel;
 
 public class ConfigurationViewModel : BaseViewModel
 {
-    private readonly IConfigurationManager _configuration;
+    private readonly IAppConfiguration _configuration;
     private readonly IThemeManager _themeManager;
 
     public ConfigurationViewModel(
         ILanguageKeys languageKeys,
-        IConfigurationManager configuration,
+        IAppConfiguration configuration,
         IThemeManager themeManager)
         : base(languageKeys)
     {
         configuration.PropertyChanged += Configuration_PropertyChanged;
-        
+
+        ConfigurationPatterns = configuration.Patterns.Select(x =>
+        {
+            var vm = new ConfigurationPatternsItemViewModel(languageKeys) 
+            { 
+                PatternsItem = x
+            };
+
+            vm.PropertyChanged += (_, _) => 
+            {
+                configuration.Save();
+                OnPropertyChanged(nameof(ConfigurationPatterns));
+            };
+
+            return vm;
+        }).ToList();
+
         _configuration = configuration;
         _themeManager = themeManager;
     }
@@ -34,117 +51,32 @@ public class ConfigurationViewModel : BaseViewModel
         OnPropertyChanged(nameof(ConfigurationViewModel.Language));
         OnPropertyChanged(nameof(ConfigurationViewModel.Theme));
         OnPropertyChanged(nameof(ConfigurationViewModel.Themes));
-        OnPropertyChanged(nameof(RegexImmersionPoint));
-        OnPropertyChanged(nameof(RegexEndOfDaillyPoint));
-        OnPropertyChanged(nameof(RegexMessageHeader));
-        OnPropertyChanged(nameof(RegexNumber));
-        OnPropertyChanged(nameof(RegexBibleReading));
-        OnPropertyChanged(nameof(MessageTitleFormat));
     }
 
     public KeyValuePairItem? Language
     {
-        get => Languages.FirstOrDefault(x => x.Key == GetPropertyValue());
-        set => SetProppertyValue(value?.Key);
+        get => Languages.FirstOrDefault(x => x.Key == _configuration.Language);
+        set => _configuration.Language = value?.Key ?? string.Empty;
     }
 
     public KeyValuePairItem? Theme
     {
-        get => Themes.FirstOrDefault(x => x.Key == GetPropertyValue());
+        get => Themes.FirstOrDefault(x => x.Key == _configuration.Theme);
         set
         {
             var theme = value?.Key;
-            SetProppertyValue(theme);
+            _configuration.Theme = theme ?? string.Empty;
             _themeManager.ApplyTheme(theme);
         }
     }
 
-    public string? RegexImmersionPoint
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
+    public IEnumerable<ConfigurationPatternsItemViewModel> ConfigurationPatterns { get; private set; }
 
-    public string? RegexEndOfDaillyPoint
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
+    public IEnumerable<KeyValuePairItem> Languages => LanguageKeys!.AvailableLanguages.Select(x => new KeyValuePairItem(x.Key, x.Value));
 
-    public string? RegexMessageHeader
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
-
-    public string? RegexNumber
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
-
-    public string? RegexBibleReading
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
-
-    public string? MessageTitleFormat
-    {
-        get => GetPropertyValue();
-        set => SetProppertyValue(value);
-    }
-
-    public IEnumerable<KeyValuePairItem> Languages => LanguageKeys.AvailableLanguages.Select(x => new KeyValuePairItem(x.Key, x.Value));
-
-    public IEnumerable<KeyValuePairItem> Themes => LanguageKeys.ComboTheme.Split(';').Select(x =>
+    public IEnumerable<KeyValuePairItem> Themes => LanguageKeys!.ComboTheme.Split(';').Select(x =>
     {
         var pairValue = x.Split('=');
         return new KeyValuePairItem(pairValue[1], pairValue[0]);
     });
-
-    private string GetPropertyValue([CallerMemberName] string? propertyName = null)
-    {
-        if (propertyName is null)
-            return string.Empty;
-
-        GetConfigurationProperty(propertyName, out var section, out var configurationPropertyName);
-
-        return section.GetValue<string>(configurationPropertyName) ?? string.Empty;
-    }
-
-    private void GetConfigurationProperty(string propertyName, out IConfiguration section, out string configurationPropertyName)
-    {
-        if (propertyName.StartsWith("Regex"))
-        {
-            section = _configuration.GetSection("Regex");
-            configurationPropertyName = propertyName[5..];
-        }
-        else
-        {
-            section = _configuration;
-            configurationPropertyName = propertyName;
-        }
-    }
-
-    private void SetProppertyValue(string? value, [CallerMemberName] string? propertyName = null)
-    {
-        if (propertyName is null)
-            return;
-
-        ArgumentNullException.ThrowIfNull(value, nameof(value));
-
-        GetConfigurationProperty(propertyName, out var section, out var configurationPropertyName);
-
-        if (section.GetValue<string>(configurationPropertyName) != value)
-        {
-            _configuration.UpdateSetting(
-                propertyName.StartsWith("Regex") ?
-                    string.Concat("Regex:", configurationPropertyName) :
-                    configurationPropertyName,
-                value);
-
-            OnPropertyChanged(propertyName);
-        }
-    }
 }

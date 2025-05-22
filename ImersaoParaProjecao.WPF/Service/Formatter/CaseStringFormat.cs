@@ -4,12 +4,12 @@ namespace ImmersionToProjection.Service.Formatter;
 
 public class CaseStringFormat(IFormatProvider baseFormatProvider) : ICaseStringFormat
 {
-    public object? GetFormat(Type formatType)
+    public object? GetFormat(Type? formatType)
     {
         return formatType == typeof(ICustomFormatter) ? this : null;
     }
 
-    public string Format(string format, object arg, IFormatProvider formatProvider)
+    public string Format(string? format, object? arg, IFormatProvider? formatProvider)
     {
         if (arg is not string str)
             return string.Format(baseFormatProvider, $"{{0:{format}}}", arg);

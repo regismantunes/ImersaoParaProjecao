@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class BaseViewModel : INotifyPropertyChanged
+public abstract class BaseViewModel : INotifyPropertyChanged
 {
-    public BaseViewModel(ILanguageKeys languageKeys)
+    public BaseViewModel(ILanguageKeys? languageKeys)
     {
-        languageKeys.PropertyChanged += (s, e) =>
+        languageKeys?.PropertyChanged += (s, e) =>
         {
             if (e.PropertyName == null)
                 OnPropertyChanged(nameof(LanguageKeys));
@@ -17,7 +17,7 @@ public class BaseViewModel : INotifyPropertyChanged
         LanguageKeys = languageKeys;
     }
 
-    public ILanguageKeys LanguageKeys { get; }
+    public ILanguageKeys? LanguageKeys { get; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

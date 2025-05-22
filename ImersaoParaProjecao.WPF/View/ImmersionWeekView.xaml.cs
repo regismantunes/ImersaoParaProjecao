@@ -1,6 +1,4 @@
-﻿using ImmersionToProjection.ViewModel;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace ImmersionToProjection.View;
 

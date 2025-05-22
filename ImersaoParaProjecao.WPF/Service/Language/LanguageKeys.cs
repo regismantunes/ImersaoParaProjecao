@@ -1,47 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ImmersionToProjection.Service.Configuration;
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
-using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
 
 namespace ImmersionToProjection.Service.Language;
 
 public class LanguageKeys : ILanguageKeys
 {
-    private readonly IConfiguration _configuration;
-
-    public LanguageKeys(IConfigurationManager configuration)
-    {
-        configuration.PropertyChanged += Configuration_PropertyChanged;
-
-        _configuration = configuration;
-    }
-
-    private void Configuration_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != "Language")
-            return;
-
-        _configuration["Regex:ImmersionPoint"] = Configuration_Regex_ImmersionPoint;
-        _configuration["Regex:EndOfDaillyPoint"] = Configuration_Regex_EndOfDaillyPoint;
-        _configuration["Regex:MessageHeader"] = Configuration_Regex_MessageHeader;
-        _configuration["Regex:Number"] = Configuration_Regex_Number;
-        _configuration["Regex:BibleReading"] = Configuration_Regex_BibleReading;
-        _configuration["MessageTitleFormat"] = Configuration_MessageTitleFormat;
-
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
-
-        var properties = GetType()
-            .GetProperties()
-            .Where(p => !p.CanWrite)
-            .Where(p => p.CanRead)
-            .Where(p => p.PropertyType == typeof(string));
-
-        foreach (var property in properties)
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property.Name));
-    }
-
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public IDictionary<string, string> AvailableLanguages =>
@@ -57,14 +23,6 @@ public class LanguageKeys : ILanguageKeys
     public string ApplicationTitle => GetString();
     public string ButtonCopyToProjection => GetString();
     public string ComboTheme => GetString();
-    public string Configuration_Language => GetString();
-    public string Configuration_MessageTitleFormat => GetString();
-    public string Configuration_Regex_BibleReading => GetString();
-    public string Configuration_Regex_EndOfDaillyPoint => GetString();
-    public string Configuration_Regex_ImmersionPoint => GetString();
-    public string Configuration_Regex_MessageHeader => GetString();
-    public string Configuration_Regex_Number => GetString();
-    public string Configuration_Theme => GetString();
     public string Error => GetString();
     public string ErrorImpossibleIdentifyImmersionText => GetString();
     public string LabelBibleReading => GetString();
@@ -83,12 +41,48 @@ public class LanguageKeys : ILanguageKeys
 
     private readonly ResourceManager _resourceManager =
         new ResourceManager("ImmersionToProjection.Resources.Languages.Strings", typeof(LanguageKeys).Assembly);
+    private readonly IAppConfiguration _configuration;
+
+    public LanguageKeys(IAppConfiguration configuration)
+    {
+        _configuration = configuration;
+
+        _configuration.PropertyChanged += _configuration_PropertyChanged;
+    }
+
+    private void _configuration_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(IAppConfiguration.Language))
+            return;
+
+        OnPropertyChanged(nameof(ApplicationTitle));
+        OnPropertyChanged(nameof(ButtonCopyToProjection));
+        OnPropertyChanged(nameof(ComboTheme));
+        OnPropertyChanged(nameof(Error));
+        OnPropertyChanged(nameof(ErrorImpossibleIdentifyImmersionText));
+        OnPropertyChanged(nameof(LabelBibleReading));
+        OnPropertyChanged(nameof(LabelConfiguration));
+        OnPropertyChanged(nameof(LabelEndOfDaillyPoint));
+        OnPropertyChanged(nameof(LabelExtractionParameters));
+        OnPropertyChanged(nameof(LabelImmersionPoint));
+        OnPropertyChanged(nameof(LabelLanguage));
+        OnPropertyChanged(nameof(LabelMessageHeader));
+        OnPropertyChanged(nameof(LabelMessageTitleFormat));
+        OnPropertyChanged(nameof(LabelMessageTitleFormatTip));
+        OnPropertyChanged(nameof(LabelNumber));
+        OnPropertyChanged(nameof(LabelTheme));
+        OnPropertyChanged(nameof(MessageDropImmersionPdfFileHere));
+        OnPropertyChanged(nameof(MessageExtractingImmersionPoints));
+    }
+
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private string GetString([CallerMemberName] string? key = null)
     {
         ArgumentNullException.ThrowIfNullOrEmpty(key, nameof(key));
 
-        var language = _configuration["Language"];
+        var language = _configuration.Language;
 
         if (string.IsNullOrEmpty(language))
             language = DefaultLanguage;

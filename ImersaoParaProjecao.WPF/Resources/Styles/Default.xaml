@@ -103,7 +103,8 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="Border"
                             Background="{DynamicResource BackgroundBrush}"
-                            Padding="0">
+                            Padding="0"
+                            BorderThickness="0">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -125,6 +126,23 @@
         <Setter Property="Margin" Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
+    <Style TargetType="ListView" x:Key="UnselectListView">
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--#endregion-->
     <!--region StackPanel-->
     <Style TargetType="StackPanel" x:Key="{x:Type StackPanel}">
@@ -139,6 +157,7 @@
     <!--#endregion-->
     <!--#region Border-->
     <Style TargetType="Border" x:Key="DropBorder">
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="{DynamicResource BackgroundButtonBrush}"/>
         <Setter Property="Margin" Value="0,0,5,5"/>
     </Style>
@@ -147,6 +166,10 @@
         <Setter Property="Margin" Value="0"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BackgroundButtonBrush}"/>
+    </Style>
+    <Style TargetType="Border" x:Key="{x:Type Border}">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBrush}"/>
     </Style>
     <!--#endregion-->
     <!--#region GroupBox-->

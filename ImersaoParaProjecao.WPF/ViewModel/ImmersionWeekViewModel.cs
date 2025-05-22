@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace ImmersionToProjection.ViewModel;
 
-public class ImmersionWeekViewModel(ILanguageKeys languageKeys, IImmersionExtractor immersionExtractor, IFormatProvider formatProvider)
+public class ImmersionWeekViewModel(ILanguageKeys languageKeys, IImmersionExtractor immersionExtractor)
     : BaseViewModel(languageKeys)
 {
     private ImmersionWeek? ImmersionWeek { get; set; }
@@ -25,7 +25,7 @@ public class ImmersionWeekViewModel(ILanguageKeys languageKeys, IImmersionExtrac
         var immersionDaysText = immersionWeek.ImmersionDays
             .Select(d => 
                 string.Concat(
-                    d.Day.GetLocalizedName(formatProvider),
+                    d.DayName,
                     lineSpaces,
                     string.Join(Environment.NewLine, d.Items)
                     )

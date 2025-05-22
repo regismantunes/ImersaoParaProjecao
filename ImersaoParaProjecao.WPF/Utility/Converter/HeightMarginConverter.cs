@@ -10,8 +10,6 @@ public class HeightMarginConverter : IMultiValueConverter
     {
         if (values[0] is double actualHeight)
         {
-            actualHeight -= 15;
-
             for (var i = 1; i < values.Length; i++)
             {
                 if (values[i] is Thickness margin)

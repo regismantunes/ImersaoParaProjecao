@@ -8,8 +8,6 @@ using ImmersionToProjection.Service.Extraction.Patterns;
 using ImmersionToProjection.Service.Extraction;
 using ImmersionToProjection.Service.Configuration;
 using ImmersionToProjection.Service.DynamicResources;
-using IConfigurationManager = ImmersionToProjection.Service.Configuration.IConfigurationManager;
-using ConfigurationManager = ImmersionToProjection.Service.Configuration.ConfigurationManager;
 using ImmersionToProjection.Service.Language;
 using ImmersionToProjection.Service.ViewFactory;
 using ImmersionToProjection.Service.Formatter;
@@ -23,21 +21,16 @@ public static class ServiceCollectionExtensions
         services
             //Services
             //Singletons
-            .AddSingleton<IConfigurationManager>(s => new ConfigurationManager(configuration, configurationFilePath))
+            .AddSingleton<IAppConfiguration>(s => new AppConfiguration(configurationFilePath))
+            .AddSingleton<IPatternsFactory, PatternsFactory>()
             .AddSingleton<ILanguageKeys, LanguageKeys>()
             .AddSingleton<IThemeManager, ThemeManager>()
             .AddSingleton<IImmersionWeekViewFactory, ImmersionWeekViewFactory>()
-            .AddSingleton<ICaseStringFormat, CaseStringFormat>()
             //Transients
-            .AddTransient<IRegexHelper>(_ => new RegexHelper(RegexPatternsFactory.CreateFromConfiguration(configuration)))
-            .AddTransient<IFormatProvider>(_ => CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "pt-BR"))
-            .AddTransient<IImmersionExtractor>(s =>
-                new ImmersionExtractor(
-                    s.GetRequiredService<IRegexHelper>(),
-                    s.GetRequiredService<IFormatProvider>(),
-                    configuration.GetValueValidating("MessageTitleFormat"),
-                    s.GetRequiredService<ICaseStringFormat>(),
-                    s.GetRequiredService<ILanguageKeys>()))
+            .AddTransient<ICaseStringFormat, CaseStringFormat>()
+            .AddTransient<IPatternsHelper, PatternsHelper>()
+            .AddTransient<IFormatProvider>(_ => CultureInfo.CreateSpecificCulture(configuration.GetValue<string>("Language") ?? "en-US"))
+            .AddTransient<IImmersionExtractor, ImmersionExtractor>()
             //MainWindow
             .AddSingleton<MainWindowViewModel>()
             .AddSingleton(s => new MainWindowView()

@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ImmersionToProjection.View"
         xmlns:viewmodel="clr-namespace:ImmersionToProjection.ViewModel"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         d:DataContext="{d:DesignInstance Type=viewmodel:ConfigurationViewModel}"
         mc:Ignorable="d"
         HorizontalAlignment="Stretch"
@@ -38,47 +39,82 @@
             <ComboBox Grid.Column="1" Grid.Row="2"
                   SelectedItem="{Binding Theme}"
                   ItemsSource="{Binding Themes}"/>
-            <GroupBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
-                  Header="{Binding LanguageKeys.LabelExtractionParameters}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Grid.Row="0"
-                    Content="{Binding LanguageKeys.LabelMessageTitleFormat}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0"
-                    Text="{Binding MessageTitleFormat}" ToolTip="{Binding LanguageKeys.LabelMessageTitleFormatTip}"/>
-                    <Label Grid.Column="0" Grid.Row="1"
-                    Content="{Binding LanguageKeys.LabelMessageHeader}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1"
-                    Text="{Binding RegexMessageHeader}"/>
-                    <Label Grid.Column="0" Grid.Row="2"
-                    Content="{Binding LanguageKeys.LabelBibleReading}"/>
-                    <TextBox Grid.Column="1" Grid.Row="2"
-                    Text="{Binding RegexBibleReading}"/>
-                    <Label Grid.Column="0" Grid.Row="3"
-                    Content="{Binding LanguageKeys.LabelNumber}"/>
-                    <TextBox Grid.Column="1" Grid.Row="3"
-                    Text="{Binding RegexNumber}"/>
-                    <Label Grid.Column="0" Grid.Row="4"
-                    Content="{Binding LanguageKeys.LabelImmersionPoint}"/>
-                    <TextBox Grid.Column="1" Grid.Row="4"
-                    Text="{Binding RegexImmersionPoint}"/>
-                    <Label Grid.Column="0" Grid.Row="5"
-                    Content="{Binding LanguageKeys.LabelEndOfDaillyPoint}"/>
-                    <TextBox Grid.Column="1" Grid.Row="5"
-                    Text="{Binding RegexEndOfDaillyPoint}"/>
-                </Grid>
-            </GroupBox>
+            <ListView Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"
+                      ItemsSource="{Binding ConfigurationPatterns}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <ItemsPresenter/>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,2,0,2">
+                            <Border.MaxWidth>
+                                <MultiBinding Converter="{StaticResource WidthMarginConverter}">
+                                    <Binding RelativeSource="{RelativeSource AncestorType=UserControl}" Path="ActualWidth"/>
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ListView, AncestorLevel=1}" Path="Margin"/>
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Grid, AncestorLevel=2}" Path="Margin"/>
+                                    <Binding Source="{StaticResource ScrollViewerWitdh}"/>
+                                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Margin"/>
+                                </MultiBinding>
+                            </Border.MaxWidth>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0"
+                                    Content="{Binding LanguageKeys.LabelLanguage}"/>
+                                <TextBlock Grid.Column="1" Grid.Row="0"
+                                    Text="{Binding Language}"/>
+                                <Label Grid.Column="0" Grid.Row="1"
+                                    Content="{Binding LanguageKeys.LabelMessageTitleFormat}"/>
+                                <TextBox Grid.Column="1" Grid.Row="1"
+                                    Text="{Binding MessageTitleFormat}" ToolTip="{Binding LanguageKeys.LabelMessageTitleFormatTip}"/>
+                                <Label Grid.Column="0" Grid.Row="2"
+                                    Content="{Binding LanguageKeys.LabelMessageHeader}"/>
+                                <TextBox Grid.Column="1" Grid.Row="2"
+                                    Text="{Binding MessageHeader}"/>
+                                <Label Grid.Column="0" Grid.Row="3"
+                                    Content="{Binding LanguageKeys.LabelBibleReading}"/>
+                                <TextBox Grid.Column="1" Grid.Row="3"
+                                    Text="{Binding BibleReading}"/>
+                                <Label Grid.Column="2" Grid.Row="1"
+                                    Content="{Binding LanguageKeys.LabelNumber}"/>
+                                <TextBox Grid.Column="3" Grid.Row="1"
+                                    Text="{Binding Number}"/>
+                                <Label Grid.Column="2" Grid.Row="2"
+                                    Content="{Binding LanguageKeys.LabelImmersionPoint}"/>
+                                <TextBox Grid.Column="3" Grid.Row="2"
+                                    Text="{Binding ImmersionPoint}"/>
+                                <Label Grid.Column="2" Grid.Row="3"
+                                    Content="{Binding LanguageKeys.LabelEndOfDaillyPoint}"/>
+                                <TextBox Grid.Column="3" Grid.Row="3"
+                                    Text="{Binding EndOfDaillyPoint}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </ScrollViewer>
 </UserControl>
