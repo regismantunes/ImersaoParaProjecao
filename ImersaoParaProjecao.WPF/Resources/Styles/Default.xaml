@@ -169,7 +169,7 @@
     </Style>
     <Style TargetType="Border" x:Key="{x:Type Border}">
         <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BackgroundButtonMouseClickBrush}"/>
     </Style>
     <!--#endregion-->
     <!--#region GroupBox-->
